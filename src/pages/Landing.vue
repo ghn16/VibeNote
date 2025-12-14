@@ -107,7 +107,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <p>&copy; 2024 VibeNote. Tous droits réservés.</p>
+      <p>&copy; 2025 VibeNote. Tous droits réservés. By GHN.nvqr</p>
     </footer>
   </div>
 </template>
