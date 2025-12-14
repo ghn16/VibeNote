@@ -123,9 +123,14 @@ async function likeReply(replyId) {
 </script>
 
 <style scoped>
+
+/* ===========================
+   Replies - Dark Theme
+=========================== */
 .replies-container {
   min-height: 100vh;
   padding: 40px 20px;
+  background: #0B0F14;
 }
 
 .loading {
@@ -138,8 +143,8 @@ async function likeReply(replyId) {
 .spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #667eea;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -163,7 +168,7 @@ async function likeReply(replyId) {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -177,17 +182,19 @@ async function likeReply(replyId) {
 .profile-header h1 {
   font-size: 32px;
   margin-bottom: 10px;
+  color: #E6EDF3;
 }
 
 .subtitle {
   font-size: 18px;
   opacity: 0.9;
+  color: #A0AEC0;
 }
 
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  background: white;
+  background: #121521;
   border-radius: 16px;
 }
 
@@ -203,20 +210,20 @@ async function likeReply(replyId) {
 }
 
 .reply-card {
-  background: white;
+  background: #1E2230;
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .reply-date {
   font-size: 13px;
-  color: #a0aec0;
+  color: #718096;
   margin-bottom: 12px;
 }
 
 .reply-content {
-  color: #2d3748;
+  color: #E6EDF3;
   line-height: 1.6;
   font-size: 16px;
   margin-bottom: 15px;
@@ -229,16 +236,17 @@ async function likeReply(replyId) {
 
 .btn-like {
   padding: 8px 16px;
-  background: #f7fafc;
-  border: 2px solid #e2e8f0;
+  background: #0F121A;
+  border: 2px solid #1E2230;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s;
+  color: #E6EDF3;
 }
 
 .btn-like:hover {
-  background: #fee;
-  border-color: #fc8181;
+  background: #2d3748;
+  border-color: #667eea;
 }
 
 .btn-primary {
@@ -257,8 +265,9 @@ async function likeReply(replyId) {
 }
 
 .footer-link a {
-  color: white;
+  color: #667eea;
   text-decoration: none;
-  opacity: 0.8;
+  opacity: 0.9;
 }
+
 </style>

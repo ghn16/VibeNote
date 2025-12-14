@@ -115,9 +115,12 @@ function formatDate(dateString) {
 </script>
 
 <style scoped>
+ /* ===========================
+   Settings - Dark Theme
+=========================== */
 .settings-container {
   min-height: 100vh;
-  background: #f7fafc;
+  background: #0B0F14;
 }
 
 .settings-nav {
@@ -131,6 +134,7 @@ function formatDate(dateString) {
 
 .settings-nav h2 {
   font-size: 24px;
+  color: white;
 }
 
 .back-btn {
@@ -141,6 +145,7 @@ function formatDate(dateString) {
   font-weight: 600;
   background: rgba(255, 255, 255, 0.2);
   border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.2s;
 }
 
 .back-btn:hover {
@@ -160,33 +165,33 @@ function formatDate(dateString) {
 
 .settings-content h1 {
   font-size: 32px;
-  color: #1a202c;
+  color: #E6EDF3;
   margin-bottom: 30px;
 }
 
 .settings-card {
-  background: white;
+  background: #1E2230;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   margin-bottom: 20px;
 }
 
 .settings-card h3 {
   font-size: 20px;
-  color: #2d3748;
+  color: #E6EDF3;
   margin-bottom: 10px;
 }
 
 .subtitle {
-  color: #718096;
+  color: #A0AEC0;
   margin-bottom: 20px;
 }
 
 .empty-state {
   text-align: center;
   padding: 40px;
-  color: #a0aec0;
+  color: #718096;
 }
 
 .blocked-list {
@@ -200,7 +205,7 @@ function formatDate(dateString) {
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  background: #f7fafc;
+  background: #121521;
   border-radius: 8px;
 }
 
@@ -212,17 +217,17 @@ function formatDate(dateString) {
 
 .blocked-id {
   font-weight: 600;
-  color: #2d3748;
+  color: #E6EDF3;
 }
 
 .blocked-reason {
   font-size: 14px;
-  color: #718096;
+  color: #A0AEC0;
 }
 
 .blocked-date {
   font-size: 12px;
-  color: #a0aec0;
+  color: #718096;
 }
 
 .btn-unblock {
@@ -244,7 +249,7 @@ function formatDate(dateString) {
   align-items: center;
   gap: 12px;
   padding: 15px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #2d3748;
   cursor: pointer;
 }
 
@@ -260,6 +265,8 @@ function formatDate(dateString) {
 
 .setting-toggle span {
   font-size: 15px;
-  color: #2d3748;
+  color: #E6EDF3;
 }
+
+
 </style>

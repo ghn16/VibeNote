@@ -222,11 +222,17 @@ function copyLink() {
 </script>
 
 <style scoped>
+/* ===========================
+   MyLink Dark Theme
+=========================== */
 .mylink-container {
   min-height: 100vh;
-  background: #f7fafc;
+  background: #0B0F14;
 }
 
+/* ---------------------------
+   Navigation
+--------------------------- */
 .mylink-nav {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -234,7 +240,7 @@ function copyLink() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .mylink-nav h2 {
@@ -262,6 +268,9 @@ function copyLink() {
   width: 120px;
 }
 
+/* ---------------------------
+   Content Layout
+--------------------------- */
 .mylink-content {
   padding: 40px;
   max-width: 1400px;
@@ -273,20 +282,23 @@ function copyLink() {
 
 .editor-section h1 {
   font-size: 32px;
-  color: #1a202c;
+  color: #E6EDF3;
   margin-bottom: 10px;
 }
 
 .subtitle {
-  color: #718096;
+  color: #A0AEC0;
   margin-bottom: 30px;
 }
 
+/* ---------------------------
+   Form & Share Cards
+--------------------------- */
 .form-card, .share-card {
-  background: white;
+  background: #121521;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
   margin-bottom: 20px;
 }
 
@@ -297,7 +309,7 @@ function copyLink() {
 .form-group label {
   display: block;
   font-weight: 600;
-  color: #2d3748;
+  color: #E6EDF3;
   margin-bottom: 8px;
 }
 
@@ -305,10 +317,12 @@ function copyLink() {
 .form-group textarea {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #1E2230;
   border-radius: 8px;
   font-size: 15px;
   font-family: inherit;
+  background: #0F121A;
+  color: #E6EDF3;
 }
 
 .form-group input:focus,
@@ -320,10 +334,13 @@ function copyLink() {
 .hint {
   display: block;
   font-size: 13px;
-  color: #a0aec0;
+  color: #718096;
   margin-top: 5px;
 }
 
+/* ---------------------------
+   Theme Selector
+--------------------------- */
 .theme-selector {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -352,6 +369,9 @@ function copyLink() {
   box-shadow: 0 0 0 3px #667eea;
 }
 
+/* ---------------------------
+   Form Actions & Messages
+--------------------------- */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -386,18 +406,21 @@ function copyLink() {
 }
 
 .save-message.success {
-  background: #d4edda;
-  color: #155724;
+  background: #1F3D2F;
+  color: #48BB78;
 }
 
 .save-message.error {
-  background: #f8d7da;
-  color: #721c24;
+  background: #3C1F1F;
+  color: #F56565;
 }
 
+/* ---------------------------
+   Share Section
+--------------------------- */
 .share-card h3 {
   margin-bottom: 15px;
-  color: #2d3748;
+  color: #E6EDF3;
 }
 
 .link-display {
@@ -409,9 +432,10 @@ function copyLink() {
 .link-display input {
   flex: 1;
   padding: 12px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #1E2230;
   border-radius: 8px;
-  background: #f7fafc;
+  background: #0F121A;
+  color: #E6EDF3;
 }
 
 .btn-copy {
@@ -444,84 +468,102 @@ function copyLink() {
 .share-btn.twitter { background: #1DA1F2; }
 .share-btn.facebook { background: #4267B2; }
 
+/* ---------------------------
+   Preview Section
+--------------------------- */
 .preview-section h3 {
   font-size: 20px;
-  color: #2d3748;
+  color: #E6EDF3;
   margin-bottom: 20px;
 }
 
 .preview-card {
-  background: white;
-  border--radius: 12px;
-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-overflow: hidden;
-position: sticky;
-top: 20px;
+  background: #121521;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  overflow: hidden;
+  position: sticky;
+  top: 20px;
 }
+
 .preview-content {
-padding: 40px;
-min-height: 500px;
-display: flex;
-align-items: center;
-justify-content: center;
+  padding: 40px;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .preview-inner {
-background: white;
-padding: 30px;
-border-radius: 12px;
-text-align: center;
-width: 100%;
+  background: #1A1F26;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  width: 100%;
 }
+
 .preview-avatar {
-width: 80px;
-height: 80px;
-border-radius: 50%;
-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-color: white;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 32px;
-font-weight: bold;
-margin: 0 auto 15px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0 auto 15px;
 }
+
 .preview-inner h2 {
-font-size: 24px;
-color: #1a202c;
-margin-bottom: 10px;
+  font-size: 24px;
+  color: #E6EDF3;
+  margin-bottom: 10px;
 }
+
 .preview-inner p {
-color: #718096;
-margin-bottom: 20px;
+  color: #A0AEC0;
+  margin-bottom: 20px;
 }
+
 .preview-placeholder {
-font-style: italic;
-opacity: 0.6;
+  font-style: italic;
+  opacity: 0.6;
 }
+
 .preview-form {
-margin-top: 20px;
+  margin-top: 20px;
 }
+
 .preview-textarea {
-background: #f7fafc;
-padding: 15px;
-border-radius: 8px;
-color: #a0aec0;
-font-size: 14px;
-margin-bottom: 10px;
+  background: #0F121A;
+  padding: 15px;
+  border-radius: 8px;
+  color: #E6EDF3;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
+
 .preview-button {
-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-color: white;
-padding: 12px;
-border-radius: 8px;
-font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
 }
+
+/* ---------------------------
+   Responsive
+--------------------------- */
 @media (max-width: 1024px) {
-.mylink-content {
-grid-template-columns: 1fr;
+  .mylink-content {
+    grid-template-columns: 1fr;
+  }
+  .preview-section {
+    order: -1;
+  }
 }
-.preview-section {
-order: -1;
-}
-}
+
+
 </style>

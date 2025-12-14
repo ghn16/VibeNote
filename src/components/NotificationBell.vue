@@ -22,6 +22,7 @@ defineEmits(['click'])
 </script>
 
 <style scoped>
+
 .notification-bell {
   position: relative;
 }
@@ -66,4 +67,5 @@ defineEmits(['click'])
   min-width: 20px;
   text-align: center;
 }
+
 </style>

@@ -412,11 +412,17 @@ async function blockMessageSender(message) {
 </script>
 
 <style scoped>
+/* ===========================
+   Messages Dark Theme
+=========================== */
 .messages-container {
   min-height: 100vh;
-  background: #f7fafc;
+  background: #0B0F14;
 }
 
+/* ---------------------------
+   Navigation
+--------------------------- */
 .messages-nav {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -453,10 +459,13 @@ async function blockMessageSender(message) {
   width: 120px;
 }
 
+/* ---------------------------
+   Header & Stats
+--------------------------- */
 .messages-header {
-  background: white;
+  background: #0F121A;
   padding: 30px 40px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #1E2230;
 }
 
 .header-content {
@@ -468,7 +477,7 @@ async function blockMessageSender(message) {
 
 .header-content h1 {
   font-size: 28px;
-  color: #2d3748;
+  color: #E6EDF3;
 }
 
 .stats {
@@ -486,6 +495,9 @@ async function blockMessageSender(message) {
   font-weight: 600;
 }
 
+/* ---------------------------
+   Filters
+--------------------------- */
 .filters {
   display: flex;
   gap: 10px;
@@ -494,18 +506,18 @@ async function blockMessageSender(message) {
 
 .filter-btn {
   padding: 10px 20px;
-  border: 2px solid #e2e8f0;
-  background: white;
+  border: 2px solid #1E2230;
+  background: #121521;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #4a5568;
+  color: #E6EDF3;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .filter-btn:hover {
-  border-color: #cbd5e0;
+  border-color: #667eea;
 }
 
 .filter-btn.active {
@@ -514,50 +526,13 @@ async function blockMessageSender(message) {
   border-color: transparent;
 }
 
+/* ---------------------------
+   Messages List
+--------------------------- */
 .messages-content {
   padding: 30px 40px;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.loading {
-  text-align: center;
-  padding: 60px 20px;
-}
-
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid #e2e8f0;
-  border-top-color: #667eea;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 20px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.empty-state {
-  text-align: center;
-  padding: 80px 20px;
-}
-
-.empty-icon {
-  font-size: 80px;
-  margin-bottom: 20px;
-}
-
-.empty-state h3 {
-  font-size: 24px;
-  color: #2d3748;
-  margin-bottom: 10px;
-}
-
-.empty-state p {
-  color: #718096;
-  margin-bottom: 30px;
 }
 
 .messages-list {
@@ -567,26 +542,26 @@ async function blockMessageSender(message) {
 }
 
 .message-card {
-  background: white;
+  background: #121521;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   transition: all 0.2s;
   border: 2px solid transparent;
 }
 
 .message-card.unread {
   border-color: #667eea;
-  background: #f7faff;
+  background: #1A1F26;
 }
 
 .message-card.flagged {
-  border-color: #f59e0b;
-  background: #fffbeb;
+  border-color: #fbbf24;
+  background: #2F1F0F;
 }
 
 .message-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .message-header-card {
@@ -618,6 +593,7 @@ async function blockMessageSender(message) {
 
 .badge-flagged {
   background: #fbbf24;
+  color: #1A1F26;
   padding: 3px 8px;
   border-radius: 12px;
   font-size: 12px;
@@ -632,16 +608,17 @@ async function blockMessageSender(message) {
   width: 36px;
   height: 36px;
   border: none;
-  background: #f7fafc;
+  background: #1A1F26;
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
   transition: all 0.2s;
+  color: #E6EDF3;
 }
 
 .action-btn:hover {
-  background: #e2e8f0;
   transform: scale(1.1);
+  background: #2F1F0F;
 }
 
 .action-btn.starred {
@@ -663,16 +640,19 @@ async function blockMessageSender(message) {
   color: #c33;
 }
 
+/* ---------------------------
+   Message Content
+--------------------------- */
 .message-content {
   padding: 15px;
-  background: #f7fafc;
+  background: #1A1F26;
   border-radius: 8px;
   margin-bottom: 15px;
   cursor: pointer;
 }
 
 .message-content p {
-  color: #2d3748;
+  color: #E6EDF3;
   line-height: 1.6;
   margin: 0;
   white-space: pre-wrap;
@@ -686,7 +666,7 @@ async function blockMessageSender(message) {
 
 .btn-reply {
   padding: 10px 20px;
-  background: white;
+  background: #1A1F26;
   border: 2px solid #667eea;
   color: #667eea;
   border-radius: 8px;
@@ -700,6 +680,9 @@ async function blockMessageSender(message) {
   color: white;
 }
 
+/* ---------------------------
+   Modals
+--------------------------- */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -715,7 +698,7 @@ async function blockMessageSender(message) {
 }
 
 .modal-content {
-  background: white;
+  background: #121521;
   border-radius: 16px;
   width: 100%;
   max-width: 600px;
@@ -725,7 +708,7 @@ async function blockMessageSender(message) {
 
 .modal-header {
   padding: 25px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #1E2230;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -733,7 +716,7 @@ async function blockMessageSender(message) {
 
 .modal-header h3 {
   font-size: 20px;
-  color: #2d3748;
+  color: #E6EDF3;
   margin: 0;
 }
 
@@ -741,7 +724,7 @@ async function blockMessageSender(message) {
   width: 32px;
   height: 32px;
   border: none;
-  background: #f7fafc;
+  background: #1A1F26;
   border-radius: 8px;
   font-size: 20px;
   cursor: pointer;
@@ -749,7 +732,7 @@ async function blockMessageSender(message) {
 }
 
 .close-btn:hover {
-  background: #e2e8f0;
+  background: #2F1F0F;
 }
 
 .modal-body {
@@ -757,7 +740,7 @@ async function blockMessageSender(message) {
 }
 
 .original-message {
-  background: #f7fafc;
+  background: #1A1F26;
   padding: 15px;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -765,14 +748,14 @@ async function blockMessageSender(message) {
 }
 
 .original-message strong {
-  color: #4a5568;
+  color: #718096;
   font-size: 13px;
   display: block;
   margin-bottom: 8px;
 }
 
 .original-message p {
-  color: #2d3748;
+  color: #E6EDF3;
   margin: 0;
   font-style: italic;
 }
@@ -780,12 +763,14 @@ async function blockMessageSender(message) {
 .modal-body textarea {
   width: 100%;
   padding: 15px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #1E2230;
   border-radius: 8px;
   font-size: 15px;
   font-family: inherit;
   resize: vertical;
   margin-bottom: 15px;
+  background: #0F121A;
+  color: #E6EDF3;
 }
 
 .modal-body textarea:focus {
@@ -793,122 +778,112 @@ async function blockMessageSender(message) {
   border-color: #667eea;
 }
 
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.checkbox-label input {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
-
-.checkbox-label span {
-  font-size: 14px;
-  color: #4a5568;
-}
-
+/* ---------------------------
+   Warning / Alerts
+--------------------------- */
 .warning-box {
-  background: #fffbeb;
-  border: 1px solid #fbbf24;
+  background: #2F1F0F;
+  border: 1px solid #FBBF24;
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 20px;
+  color: #FEEBC8;
 }
 
 .warning-box p {
   font-weight: 600;
-  color: #92400e;
+  color: #FEEBC8;
   margin-bottom: 10px;
 }
 
 .warning-box ul {
   margin-left: 20px;
-  color: #78350f;
+  color: #FFD699;
 }
 
 .warning-box li {
   margin-bottom: 5px;
 }
 
-.form-group {
-  margin-bottom: 15px;
+/* ---------------------------
+   Buttons in Modals
+--------------------------- */
+.modal-footer .btn-primary {
+  background: #2F81F7;
 }
 
-.form-group label {
-  display: block;
-  font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 8px;
+.modal-footer .btn-primary:hover {
+  box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
 }
 
-.modal-footer {
-  padding: 20px 25px;
-  border-top: 1px solid #e2e8f0;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+.modal-footer .btn-secondary {
+  background: #121821;
+  border: 2px solid rgba(139,148,158,0.15);
+  color: #E6EDF3;
 }
 
-.btn-primary {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-decoration: none;
-  display: inline-block;
+.modal-footer .btn-secondary:hover {
+  background: #1A1F26;
 }
 
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
+.modal-footer .btn-danger {
+  background: #E53E3E;
 }
 
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.modal-footer .btn-danger:hover {
+  background: #C53030;
 }
 
-.btn-secondary {
-  padding: 12px 24px;
-  background: white;
-  border: 2px solid #e2e8f0;
-  color: #4a5568;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
+/* ---------------------------
+   Loading Spinner
+--------------------------- */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
 }
 
-.btn-secondary:hover {
-  background: #f7fafc;
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #1E2230;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
 }
 
-.btn-danger {
-  padding: 12px 24px;
-  background: #e53e3e;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.btn-danger:hover:not(:disabled) {
-  background: #c53030;
+/* ---------------------------
+   Empty State
+--------------------------- */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: #718096;
 }
 
-.btn-danger:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
 }
 
+.empty-state h3 {
+  font-size: 24px;
+  color: #E6EDF3;
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  color: #718096;
+  margin-bottom: 30px;
+}
+
+/* ---------------------------
+   Responsive
+--------------------------- */
 @media (max-width: 768px) {
   .messages-nav {
     padding: 15px 20px;
@@ -930,4 +905,6 @@ async function blockMessageSender(message) {
     margin: 10px;
   }
 }
+
+
 </style>

@@ -234,43 +234,52 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+ /* ===============================
+   ANALYTICS — Dark Secure Theme
+   =============================== */
+
 .analytics-container {
   min-height: 100vh;
-  background: #f7fafc;
+  background: #0B0F14;
+  color: #E6EDF3;
 }
 
+/* Navigation */
 .analytics-nav {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #121821;
   padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid rgba(139, 148, 158, 0.1);
 }
 
 .analytics-nav h2 {
-  font-size: 24px;
+  font-size: 22px;
+  font-weight: 600;
 }
 
 .back-btn {
-  color: white;
+  color: #E6EDF3;
   text-decoration: none;
   padding: 10px 20px;
   border-radius: 8px;
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  border: 1px solid rgba(139, 148, 158, 0.2);
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
 .back-btn:hover {
-  background: white;
-  color: #667eea;
+  border-color: #2F81F7;
+  box-shadow: 0 0 0 1px rgba(47, 129, 247, 0.4);
 }
 
 .spacer {
   width: 120px;
 }
 
+/* Content */
 .analytics-content {
   padding: 40px;
   max-width: 1200px;
@@ -278,28 +287,28 @@ onMounted(async () => {
 }
 
 .analytics-content h1 {
-  font-size: 32px;
-  color: #1a202c;
-  margin-bottom: 10px;
+  font-size: 30px;
+  margin-bottom: 8px;
 }
 
 .subtitle {
-  color: #718096;
+  color: #8B949E;
   margin-bottom: 30px;
 }
 
+/* Loading */
 .loading {
   text-align: center;
   padding: 60px;
 }
 
 .spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid #e2e8f0;
-  border-top-color: #667eea;
+  width: 46px;
+  height: 46px;
+  border: 3px solid rgba(139, 148, 158, 0.2);
+  border-top-color: #2F81F7;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.9s linear infinite;
   margin: 0 auto;
 }
 
@@ -307,6 +316,7 @@ onMounted(async () => {
   to { transform: rotate(360deg); }
 }
 
+/* Stats */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -315,82 +325,75 @@ onMounted(async () => {
 }
 
 .stat-card {
-  background: white;
+  background: #121821;
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(139, 148, 158, 0.1);
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-.stat-icon {
-  font-size: 40px;
-}
-
 .stat-details h3 {
-  font-size: 32px;
-  color: #2d3748;
+  font-size: 28px;
   margin-bottom: 5px;
 }
 
 .stat-details p {
-  color: #718096;
+  color: #8B949E;
   font-size: 14px;
 }
 
+/* Chart */
 .chart-card {
-  background: white;
+  background: #121821;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(139, 148, 158, 0.1);
   margin-bottom: 30px;
 }
 
 .chart-card h3 {
-  color: #2d3748;
   margin-bottom: 20px;
 }
 
 .chart {
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
-  gap: 4px;
+  gap: 6px;
   height: 200px;
   padding: 20px 0;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 1px solid rgba(139, 148, 158, 0.15);
 }
 
 .empty-chart {
   text-align: center;
   padding: 60px 20px;
-  color: #a0aec0;
+  color: #8B949E;
 }
 
 .chart-bar {
   flex: 1;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #2F81F7;
   border-radius: 4px 4px 0 0;
   min-height: 20px;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.2s;
-  max-width: 40px;
+  max-width: 36px;
+  opacity: 0.85;
+  transition: opacity 0.2s;
 }
 
 .chart-bar:hover {
-  opacity: 0.8;
+  opacity: 1;
 }
 
 .bar-label {
   position: absolute;
-  top: -20px;
+  top: -18px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 11px;
   font-weight: 600;
-  color: #4a5568;
+  color: #8B949E;
 }
 
 .chart-labels {
@@ -398,19 +401,19 @@ onMounted(async () => {
   justify-content: space-around;
   margin-top: 10px;
   font-size: 12px;
-  color: #a0aec0;
+  color: #8B949E;
 }
 
+/* Sentiment */
 .sentiment-card {
-  background: white;
+  background: #121821;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(139, 148, 158, 0.1);
   margin-bottom: 30px;
 }
 
 .sentiment-card h3 {
-  color: #2d3748;
   margin-bottom: 20px;
 }
 
@@ -428,56 +431,48 @@ onMounted(async () => {
 }
 
 .sentiment-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   font-weight: 500;
-  color: #2d3748;
-}
-
-.sentiment-emoji {
-  font-size: 24px;
 }
 
 .sentiment-bar-bg {
-  background: #e2e8f0;
-  height: 30px;
-  border-radius: 15px;
+  background: #0B0F14;
+  height: 26px;
+  border-radius: 13px;
   overflow: hidden;
+  border: 1px solid rgba(139, 148, 158, 0.15);
 }
 
 .sentiment-bar {
   height: 100%;
-  transition: width 0.5s ease;
+  transition: width 0.4s ease;
 }
 
 .sentiment-bar.positive {
-  background: linear-gradient(90deg, #48bb78, #38a169);
+  background: #3FB950;
 }
 
 .sentiment-bar.neutral {
-  background: linear-gradient(90deg, #ecc94b, #d69e2e);
+  background: rgba(139, 148, 158, 0.6);
 }
 
 .sentiment-bar.negative {
-  background: linear-gradient(90deg, #f56565, #e53e3e);
+  background: #da3633;
 }
 
 .sentiment-count {
   text-align: right;
   font-weight: 600;
-  color: #2d3748;
 }
 
+/* Insights */
 .insights-card {
-  background: white;
+  background: #121821;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(139, 148, 158, 0.1);
 }
 
 .insights-card h3 {
-  color: #2d3748;
   margin-bottom: 20px;
 }
 
@@ -489,28 +484,24 @@ onMounted(async () => {
 
 .insight-item {
   display: flex;
-  align-items: center;
   gap: 15px;
   padding: 15px;
-  background: #f7fafc;
+  background: #0B0F14;
   border-radius: 8px;
-}
-
-.insight-icon {
-  font-size: 32px;
+  border: 1px solid rgba(139, 148, 158, 0.1);
 }
 
 .insight-item strong {
   display: block;
-  color: #2d3748;
   margin-bottom: 5px;
 }
 
 .insight-item p {
-  color: #718096;
+  color: #8B949E;
   font-size: 14px;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .analytics-content {
     padding: 20px;
@@ -522,11 +513,12 @@ onMounted(async () => {
 
   .sentiment-item {
     grid-template-columns: 1fr;
-    gap: 10px;
   }
 
   .sentiment-count {
     text-align: left;
   }
 }
+
+
 </style>

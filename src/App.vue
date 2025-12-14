@@ -36,7 +36,7 @@ body {
   min-height: 100vh;
 }
 
-/* Auth Pages */
+/* ===== Auth Pages ===== */
 .auth-container {
   min-height: 100vh;
   display: flex;
@@ -55,10 +55,10 @@ body {
 }
 
 .auth-card h1 {
-  color: #2d3748;
-  margin-bottom: 30px;
   font-size: 28px;
+  color: #2d3748;
   text-align: center;
+  margin-bottom: 30px;
 }
 
 .form-group {
@@ -67,10 +67,10 @@ body {
 
 .form-group label {
   display: block;
-  color: #4a5568;
-  font-weight: 500;
-  margin-bottom: 8px;
   font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
+  margin-bottom: 8px;
 }
 
 .form-group input {
@@ -92,10 +92,10 @@ body {
   padding: 14px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
   font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
   cursor: pointer;
   transition: transform 0.2s;
   margin-top: 10px;
@@ -122,13 +122,12 @@ body {
 .auth-link {
   text-align: center;
   margin-top: 20px;
-  color: #718096;
   font-size: 14px;
+  color: #718096;
 }
 
 .auth-link a {
   color: #667eea;
-  text-decoration: none;
   font-weight: 600;
 }
 
@@ -136,7 +135,7 @@ body {
   text-decoration: underline;
 }
 
-/* Dashboard */
+/* ===== Dashboard ===== */
 .dashboard-container {
   min-height: 100vh;
   background: white;
@@ -149,7 +148,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .dashboard-nav h2 {
@@ -158,7 +157,7 @@ body {
 
 .btn-logout {
   padding: 10px 24px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,0.2);
   color: white;
   border: 2px solid white;
   border-radius: 6px;
@@ -202,13 +201,13 @@ body {
   border: 2px solid #e2e8f0;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .info-card h3 {
+  font-size: 20px;
   color: #2d3748;
   margin-bottom: 20px;
-  font-size: 20px;
 }
 
 .info-item {
@@ -232,7 +231,7 @@ body {
   font-weight: 600;
 }
 
-/* Loading */
+/* ===== Loading ===== */
 .loading-container {
   min-height: 100vh;
   display: flex;
@@ -243,7 +242,7 @@ body {
 .spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid rgba(255, 255, 255, 0.3);
+  border: 4px solid rgba(255,255,255,0.3);
   border-top-color: white;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -252,4 +251,5 @@ body {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
 </style>

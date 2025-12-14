@@ -7,23 +7,22 @@
       </div>
 
       <div class="nav-links">
-        <router-link to="/dashboard" class="nav-link">  Accueil </router-link>
+        <router-link to="/dashboard" class="nav-link">Accueil</router-link>
         <router-link to="/messages" class="nav-link">
-           Messages
+          Messages
           <span v-if="messagesStore.unreadCount > 0" class="badge">
             {{ messagesStore.unreadCount }}
           </span>
         </router-link>
-        <router-link to="/analytics" class="nav-link"> Stats </router-link>
-        <router-link to="/my-link" class="nav-link"> Mon Lien </router-link>
-        <router-link to="/analytics" class="nav-link"> Stats </router-link>
-        <router-link to="/settings" class="nav-link"> Sécurité </router-link>
+        <router-link to="/my-link" class="nav-link">Mon Lien</router-link>
+        <router-link to="/analytics" class="nav-link">Statistiques</router-link>
+        <router-link to="/settings" class="nav-link">Paramètres</router-link>
         <router-link
           v-if="auth.user?.profile?.role === 'admin'"
           to="/admin"
           class="nav-link admin-link"
         >
-           Admin
+          Admin
         </router-link>
       </div>
 
@@ -35,44 +34,55 @@
 
     <!-- Contenu principal -->
     <div class="dashboard-content">
-      <!-- Carte de bienvenue -->
+      <!-- En-tête -->
       <div class="welcome-card">
         <div class="welcome-content">
           <div>
-            <h1>Bienvenue, {{ username }} ! 👋</h1>
-            <p class="subtitle">Voici ton tableau de bord VibeNote</p>
+            <h1>Bonjour, {{ username }}</h1>
+            <p class="subtitle">Gérez vos messages anonymes en toute sécurité</p>
           </div>
-          <div v-if="auth.user?.profile?.is_premium" class="premium-badge">✨ Premium</div>
+          <div v-if="auth.user?.profile?.is_premium" class="premium-badge">Premium</div>
         </div>
       </div>
 
-      <!-- Statistiques rapides -->
+      <!-- Statistiques -->
       <div class="stats-grid">
         <div class="stat-card" @click="$router.push('/messages')">
-          <div class="stat-icon">📬</div>
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
           <div class="stat-info">
             <h3>{{ messagesStore.messages.length }}</h3>
             <p>Messages reçus</p>
           </div>
-          <div class="stat-trend">
-            <span class="trend-up">↗ +{{ recentMessagesCount }}</span>
-            <span class="trend-label">cette semaine</span>
+          <div class="stat-trend" v-if="recentMessagesCount > 0">
+            <span class="trend-up">+{{ recentMessagesCount }} cette semaine</span>
           </div>
         </div>
 
         <div class="stat-card highlight" @click="$router.push('/messages?filter=unread')">
-          <div class="stat-icon">✨</div>
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+          </div>
           <div class="stat-info">
             <h3>{{ messagesStore.unreadCount }}</h3>
             <p>Non lus</p>
           </div>
           <button v-if="messagesStore.unreadCount > 0" class="stat-action">
-            Lire maintenant →
+            Lire maintenant
           </button>
         </div>
 
         <div class="stat-card" @click="$router.push('/messages?filter=starred')">
-          <div class="stat-icon">⭐</div>
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
           <div class="stat-info">
             <h3>{{ messagesStore.starredMessages.length }}</h3>
             <p>Favoris</p>
@@ -80,92 +90,108 @@
         </div>
 
         <div class="stat-card" @click="$router.push('/analytics')">
-          <div class="stat-icon">👁️</div>
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+          </div>
           <div class="stat-info">
             <h3>{{ auth.user?.profile?.profile_views || 0 }}</h3>
             <p>Vues du profil</p>
-          </div>
-          <div class="stat-trend">
-            <span class="trend-up">↗ Voir détails</span>
           </div>
         </div>
       </div>
 
       <!-- Actions rapides -->
       <div class="quick-actions">
-        <h3>⚡ Actions rapides</h3>
+        <h3>Actions rapides</h3>
         <div class="actions-grid">
-          <router-link to="/my-link" class="action-card">
-            <div class="action-icon">🎨</div>
+          <router-link to="/messages" class="action-card">
+            <div class="action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
             <div class="action-content">
-              <strong>Personnaliser mon profil</strong>
-              <p>Change ton thème, bio et plus</p>
+              <strong>Mes messages</strong>
+              <p>Consulter mes messages</p>
             </div>
           </router-link>
 
-          <button @click="copyLink" class="action-card">
-            <div class="action-icon">🔗</div>
-            <div class="action-content">
-              <strong>{{ copied ? "✅ Copié !" : "Copier mon lien" }}</strong>
-              <p>Partage-le sur tes réseaux</p>
+          <router-link to="/my-link" class="action-card">
+            <div class="action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+              </svg>
             </div>
-          </button>
+            <div class="action-content">
+              <strong>Personnaliser</strong>
+              <p>Modifier mon profil</p>
+            </div>
+          </router-link>
 
           <router-link to="/analytics" class="action-card">
-            <div class="action-icon">📊</div>
+            <div class="action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
             <div class="action-content">
-              <strong>Voir mes statistiques</strong>
-              <p>Analytics et insights</p>
+              <strong>Statistiques</strong>
+              <p>Voir mes analytics</p>
             </div>
           </router-link>
 
           <router-link to="/settings" class="action-card">
-            <div class="action-icon">🛡️</div>
+            <div class="action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
             <div class="action-content">
-              <strong>Gérer la sécurité</strong>
-              <p>Blocages et confidentialité</p>
+              <strong>Paramètres</strong>
+              <p>Sécurité et confidentialité</p>
             </div>
           </router-link>
         </div>
       </div>
 
-      <!-- Section lien unique -->
+      <!-- Lien unique -->
       <div class="link-section">
         <div class="link-header">
-          <h3>🔗 Mon lien unique</h3>
-          <button @click="toggleSoundNotif" class="btn-sound">
-            {{ notificationsStore.soundEnabled ? "🔊" : "🔇" }}
+          <h3>Votre lien unique</h3>
+          <button @click="toggleSoundNotif" class="btn-sound" :title="notificationsStore.soundEnabled ? 'Désactiver le son' : 'Activer le son'">
+            <svg v-if="notificationsStore.soundEnabled" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+            <svg v-else viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+            </svg>
           </button>
         </div>
 
         <div class="link-display-box">
           <input :value="uniqueLink" readonly class="link-input" ref="linkInput" />
           <button @click="copyLink" class="btn-copy">
-            {{ copied ? "✅ Copié" : "📋 Copier" }}
+            {{ copied ? "Copié !" : "Copier" }}
           </button>
         </div>
 
-        <p class="link-hint">
-          <span class="hint-icon">💡</span>
-          Partage ce lien pour recevoir des messages anonymes !
-        </p>
+        <p class="link-hint">Partagez ce lien pour recevoir des messages anonymes</p>
 
-        <!-- Boutons de partage social -->
         <div class="social-share">
           <a :href="whatsappShare" target="_blank" class="share-btn whatsapp">
-            <span class="share-icon">📱</span>
             WhatsApp
           </a>
           <a :href="twitterShare" target="_blank" class="share-btn twitter">
-            <span class="share-icon">🐦</span>
             Twitter
           </a>
           <a :href="facebookShare" target="_blank" class="share-btn facebook">
-            <span class="share-icon">👥</span>
             Facebook
           </a>
           <button @click="shareNative" class="share-btn native">
-            <span class="share-icon">📤</span>
             Partager
           </button>
         </div>
@@ -174,16 +200,20 @@
       <!-- Messages récents -->
       <div class="recent-section">
         <div class="section-header">
-          <h3>📨 Messages récents</h3>
+          <h3>Messages récents</h3>
           <router-link to="/messages" class="link-see-all">
-            Voir tout ({{ messagesStore.messages.length }}) →
+            Voir tout ({{ messagesStore.messages.length }})
           </router-link>
         </div>
 
         <div v-if="recentMessages.length === 0" class="empty-messages">
-          <div class="empty-icon">📭</div>
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+            </svg>
+          </div>
           <p>Aucun message pour le moment</p>
-          <button @click="copyLink" class="btn-share-empty">📤 Partager mon lien</button>
+          <button @click="copyLink" class="btn-share-empty">Partager mon lien</button>
         </div>
 
         <div v-else class="recent-messages-list">
@@ -198,53 +228,13 @@
               <span class="mini-date">{{ formatDate(message.created_at) }}</span>
               <div class="mini-badges">
                 <span v-if="!message.is_read" class="mini-badge new">Nouveau</span>
-                <span v-if="message.is_starred" class="mini-badge starred">⭐</span>
-                <span v-if="message.is_flagged" class="mini-badge warning">⚠️</span>
+                <span v-if="message.is_starred" class="mini-badge starred">Favori</span>
+                <span v-if="message.is_flagged" class="mini-badge warning">Signalé</span>
               </div>
             </div>
             <p class="mini-content">{{ truncate(message.content, 120) }}</p>
             <div class="mini-footer">
-              <button @click.stop="quickReply(message)" class="btn-quick-reply">💬 Répondre</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Insights et conseils -->
-      <div class="insights-section">
-        <h3>💡 Conseils & Insights</h3>
-        <div class="insights-grid">
-          <div class="insight-card" v-if="messagesStore.unreadCount > 5">
-            <div class="insight-icon">📬</div>
-            <div class="insight-content">
-              <strong>Tu as {{ messagesStore.unreadCount }} messages non lus</strong>
-              <p>Prends le temps de les lire et d'y répondre !</p>
-              <router-link to="/messages" class="insight-link">Voir les messages →</router-link>
-            </div>
-          </div>
-
-          <div class="insight-card" v-if="auth.user?.profile?.profile_views > 50">
-            <div class="insight-icon">🔥</div>
-            <div class="insight-content">
-              <strong>Ton profil est populaire !</strong>
-              <p>{{ auth.user.profile.profile_views }} vues. Continue à partager ton lien.</p>
-            </div>
-          </div>
-
-          <div class="insight-card" v-if="messagesStore.messages.length === 0">
-            <div class="insight-icon">🚀</div>
-            <div class="insight-content">
-              <strong>Commence ton aventure !</strong>
-              <p>Partage ton lien sur tes réseaux sociaux pour recevoir tes premiers messages.</p>
-              <button @click="copyLink" class="insight-link">📋 Copier mon lien</button>
-            </div>
-          </div>
-
-          <div class="insight-card tip">
-            <div class="insight-icon">✨</div>
-            <div class="insight-content">
-              <strong>Astuce du jour</strong>
-              <p>{{ dailyTip }}</p>
+              <button @click.stop="quickReply(message)" class="btn-quick-reply">Répondre</button>
             </div>
           </div>
         </div>
@@ -252,7 +242,7 @@
 
       <!-- Informations du compte -->
       <div class="account-section">
-        <h3>👤 Mon compte</h3>
+        <h3>Informations du compte</h3>
         <div class="account-grid">
           <div class="account-item">
             <span class="account-label">Email</span>
@@ -271,7 +261,7 @@
             <span class="account-value">
               {{ auth.user?.profile?.subscription_plan || "Gratuit" }}
               <span v-if="!auth.user?.profile?.is_premium" class="upgrade-link">
-                <router-link to="/pricing">⬆️ Upgrade</router-link>
+                <router-link to="/pricing">Améliorer</router-link>
               </span>
             </span>
           </div>
@@ -324,7 +314,6 @@ const formattedDate = computed(() => {
   });
 });
 
-// Liens de partage social
 const whatsappShare = computed(() => {
   return `https://wa.me/?text=Envoie-moi un message anonyme sur VibeNote ! ${uniqueLink.value}`;
 });
@@ -339,31 +328,11 @@ const facebookShare = computed(() => {
   return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(uniqueLink.value)}`;
 });
 
-// Astuce du jour
-const dailyTips = [
-  "Personnalise ton profil avec un thème unique pour te démarquer !",
-  "Réponds publiquement à certains messages pour créer de l'engagement.",
-  "Active les notifications pour ne jamais manquer un message.",
-  "Partage ton lien dans ta bio Instagram pour plus de visibilité.",
-  "Utilise les templates de questions pour encourager l'interaction.",
-  "Archive les anciens messages pour garder une boîte de réception propre.",
-  "Marque tes messages préférés en favoris pour les retrouver facilement.",
-];
-
-const dailyTip = computed(() => {
-  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-  return dailyTips[dayOfYear % dailyTips.length];
-});
-
 onMounted(async () => {
   await messagesStore.fetchMessages();
-
-  // Initialiser les notifications
   notificationsStore.loadPreferences();
   notificationsStore.initRealtime(auth.user.id);
   await notificationsStore.requestNotificationPermission();
-
-  // Sync unread count
   notificationsStore.unreadCount = messagesStore.unreadCount;
 });
 
@@ -380,14 +349,11 @@ async function handleLogout() {
 }
 
 function copyLink() {
-  if (linkInput.value) {
-    linkInput.value.select();
-    document.execCommand("copy");
-    copied.value = true;
-    setTimeout(() => {
-      copied.value = false;
-    }, 2000);
-  }
+  navigator.clipboard.writeText(uniqueLink.value);
+  copied.value = true;
+  setTimeout(() => {
+    copied.value = false;
+  }, 2000);
 }
 
 async function shareNative() {
@@ -447,6 +413,7 @@ function toggleSoundNotif() {
 </script>
 
 <style scoped>
+
 * {
   margin: 0;
   padding: 0;
@@ -455,38 +422,39 @@ function toggleSoundNotif() {
 
 .dashboard-container {
   min-height: 100vh;
-  background: #f7fafc;
+  background: #0B0F14;
 }
 
 .dashboard-nav {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 20px 40px;
+  background: #121821;
+  border-bottom: 1px solid rgba(139, 148, 158, 0.1);
+  padding: 16px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
+  backdrop-filter: blur(10px);
 }
 
 .nav-brand h2 {
-  font-size: 24px;
+  font-size: 20px;
   margin: 0;
   font-weight: 700;
+  color: #E6EDF3;
 }
 
 .nav-links {
   display: flex;
-  gap: 10px;
+  gap: 4px;
 }
 
 .nav-link {
-  color: white;
+  color: #8B949E;
   text-decoration: none;
-  padding: 10px 16px;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
   font-weight: 500;
   font-size: 14px;
   transition: all 0.2s;
@@ -497,62 +465,65 @@ function toggleSoundNotif() {
 }
 
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(47, 129, 247, 0.1);
+  color: #E6EDF3;
 }
 
 .nav-link.router-link-active {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(47, 129, 247, 0.15);
+  color: #2F81F7;
 }
 
 .nav-link.admin-link {
-  background: rgba(255, 215, 0, 0.3);
-  border: 1px solid rgba(255, 215, 0, 0.5);
+  background: rgba(63, 185, 80, 0.1);
+  color: #3FB950;
+  border: 1px solid rgba(63, 185, 80, 0.2);
 }
 
 .badge {
-  background: #ff4757;
-  color: white;
-  padding: 2px 8px;
-  border-radius: 12px;
+  background: #2F81F7;
+  color: #E6EDF3;
+  padding: 2px 7px;
+  border-radius: 10px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .btn-logout {
-  padding: 10px 24px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid white;
-  border-radius: 8px;
+  padding: 8px 18px;
+  background: transparent;
+  color: #8B949E;
+  border: 1px solid rgba(139, 148, 158, 0.3);
+  border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  font-size: 14px;
 }
 
 .btn-logout:hover {
-  background: white;
-  color: #667eea;
+  border-color: #2F81F7;
+  color: #2F81F7;
 }
 
 .dashboard-content {
-  padding: 40px;
+  padding: 30px 40px;
   max-width: 1400px;
   margin: 0 auto;
 }
 
 .welcome-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 40px;
-  border-radius: 16px;
-  margin-bottom: 30px;
-  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+  background: #121821;
+  padding: 28px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(139, 148, 158, 0.1);
 }
 
 .welcome-content {
@@ -562,719 +533,431 @@ function toggleSoundNotif() {
 }
 
 .welcome-card h1 {
-  font-size: 32px;
-  margin-bottom: 8px;
+  font-size: 26px;
+  margin-bottom: 6px;
   font-weight: 700;
+  color: #E6EDF3;
 }
 
 .subtitle {
-  font-size: 18px;
-  opacity: 0.9;
+  font-size: 15px;
+  color: #8B949E;
 }
 
 .premium-badge {
-  background: rgba(255, 215, 0, 0.3);
-  border: 2px solid rgba(255, 215, 0, 0.6);
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 18px;
+  background: rgba(63, 185, 80, 0.15);
+  border: 1px solid rgba(63, 185, 80, 0.3);
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #3FB950;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
+  gap: 18px;
+  margin-bottom: 24px;
 }
 
 .stat-card {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s;
+  background: #121821;
+  padding: 22px;
+  border-radius: 10px;
+  transition: all 0.2s;
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  transform: scaleY(0);
-  transition: transform 0.3s;
-}
-
-.stat-card:hover::before {
-  transform: scaleY(1);
+  border: 1px solid rgba(139, 148, 158, 0.1);
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: rgba(47, 129, 247, 0.3);
+  box-shadow: 0 0 20px rgba(47, 129, 247, 0.1);
 }
 
 .stat-card.highlight {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: rgba(47, 129, 247, 0.1);
+  border-color: rgba(47, 129, 247, 0.3);
+}
+
+.stat-card.highlight:hover {
+  box-shadow: 0 0 25px rgba(47, 129, 247, 0.2);
 }
 
 .stat-icon {
-  font-size: 40px;
-  margin-bottom: 15px;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 12px;
+  color: #2F81F7;
+}
+
+.stat-icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .stat-info h3 {
-  font-size: 36px;
-  margin-bottom: 5px;
+  font-size: 30px;
+  margin-bottom: 4px;
   font-weight: 700;
+  color: #E6EDF3;
 }
 
 .stat-info p {
-  font-size: 14px;
-  opacity: 0.8;
+  font-size: 13px;
+  color: #8B949E;
 }
 
 .stat-trend {
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  margin-top: 10px;
 }
 
 .trend-up {
-  color: #48bb78;
+  color: #3FB950;
   font-weight: 600;
-  font-size: 14px;
-}
-
-.stat-card.highlight .trend-up {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.trend-label {
   font-size: 12px;
-  opacity: 0.7;
 }
 
 .stat-action {
   margin-top: 12px;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
+  padding: 7px 14px;
+  background: rgba(47, 129, 247, 0.15);
+  border: 1px solid rgba(47, 129, 247, 0.3);
+  color: #2F81F7;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   transition: all 0.2s;
 }
 
 .stat-action:hover {
-  background: white;
-  color: #667eea;
+  background: #2F81F7;
+  color: #E6EDF3;
+  box-shadow: 0 0 15px rgba(47, 129, 247, 0.3);
 }
 
 .quick-actions {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin-bottom: 30px;
+  background: #121821;
+  padding: 26px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(139, 148, 158, 0.1);
 }
 
 .quick-actions h3 {
-  color: #2d3748;
-  margin-bottom: 20px;
-  font-size: 20px;
+  color: #E6EDF3;
+  margin-bottom: 18px;
+  font-size: 17px;
+  font-weight: 600;
 }
 
 .actions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
 }
 
 .action-card {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 20px;
-  background: #f7fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  text-decoration: none;
-  color: inherit;
+  gap: 14px;
+  padding: 16px;
+  background: rgba(139, 148, 158, 0.05);
+  border: 1px solid rgba(139, 148, 158, 0.1);
+  border-radius: 8px;
+    transition: all 0.2s;
   cursor: pointer;
-  transition: all 0.2s;
 }
 
 .action-card:hover {
-  border-color: #667eea;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  background: rgba(47, 129, 247, 0.1);
+  border-color: rgba(47, 129, 247, 0.3);
+  box-shadow: 0 0 15px rgba(47, 129, 247, 0.1);
 }
 
 .action-icon {
-  font-size: 32px;
-  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  color: #2F81F7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .action-content strong {
   display: block;
-  color: #2d3748;
-  margin-bottom: 4px;
+  color: #E6EDF3;
   font-size: 15px;
+  margin-bottom: 2px;
 }
 
 .action-content p {
-  color: #718096;
   font-size: 13px;
-  margin: 0;
+  color: #8B949E;
 }
 
 .link-section {
-  background: white;
-  border: 2px solid #e2e8f0;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin-bottom: 30px;
+  background: #121821;
+  padding: 24px;
+  border-radius: 10px;
+  border: 1px solid rgba(139, 148, 158, 0.1);
+  margin-bottom: 24px;
 }
 
 .link-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .link-header h3 {
-  color: #2d3748;
-  font-size: 20px;
+  color: #E6EDF3;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .btn-sound {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #e2e8f0;
-  background: white;
-  border-radius: 50%;
-  font-size: 20px;
+  background: rgba(47, 129, 247, 0.1);
+  border: 1px solid rgba(47, 129, 247, 0.3);
+  color: #2F81F7;
+  padding: 6px 10px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .btn-sound:hover {
-  border-color: #667eea;
-  transform: scale(1.1);
+  background: #2F81F7;
+  color: #E6EDF3;
+  box-shadow: 0 0 12px rgba(47, 129, 247, 0.2);
 }
 
 .link-display-box {
   display: flex;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 
 .link-input {
   flex: 1;
-  padding: 14px 18px;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 15px;
-  background: #f7fafc;
-  font-weight: 500;
-  color: #2d3748;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 148, 158, 0.2);
+  background: #121821;
+  color: #E6EDF3;
+  font-size: 14px;
 }
 
 .btn-copy {
-  padding: 14px 28px;
-  background: #667eea;
-  color: white;
+  padding: 10px 16px;
+  background: #2F81F7;
+  color: #E6EDF3;
   border: none;
-  border-radius: 10px;
-  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
   transition: all 0.2s;
-  white-space: nowrap;
 }
 
 .btn-copy:hover {
-  background: #5568d3;
-  transform: translateY(-2px);
+  background: #1e5fd1;
 }
 
 .link-hint {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #718096;
-  margin-bottom: 20px;
-  padding: 12px;
-  background: #f7fafc;
-  border-radius: 8px;
-}
-
-.hint-icon {
-  font-size: 18px;
+  font-size: 13px;
+  color: #8B949E;
+  margin-bottom: 10px;
 }
 
 .social-share {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
 }
 
 .share-btn {
-  flex: 1;
-  min-width: 140px;
-  padding: 12px 16px;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  border-radius: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
   font-weight: 600;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  color: #E6EDF3;
+  text-decoration: none;
   transition: all 0.2s;
-  border: none;
-  cursor: pointer;
 }
 
-.share-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.share-icon {
-  font-size: 18px;
-}
-
-.share-btn.whatsapp {
-  background: #25d366;
-}
-.share-btn.twitter {
-  background: #1da1f2;
-}
-.share-btn.facebook {
-  background: #4267b2;
-}
-.share-btn.native {
-  background: #667eea;
-}
+.share-btn.whatsapp { background: #25D366; }
+.share-btn.whatsapp:hover { opacity: 0.85; }
+.share-btn.twitter { background: #2F81F7; }
+.share-btn.twitter:hover { opacity: 0.85; }
+.share-btn.facebook { background: #3B5998; }
+.share-btn.facebook:hover { opacity: 0.85; }
+.share-btn.native { background: #8B949E; }
+.share-btn.native:hover { opacity: 0.85; }
 
 .recent-section {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin-bottom: 30px;
+  background: #121821;
+  padding: 24px;
+  border-radius: 10px;
+  border: 1px solid rgba(139, 148, 158, 0.1);
+  margin-bottom: 24px;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .section-header h3 {
-  color: #2d3748;
-  font-size: 20px;
+  color: #E6EDF3;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .link-see-all {
-  color: #667eea;
+  font-size: 13px;
+  color: #2F81F7;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.link-see-all:hover {
-  text-decoration: underline;
 }
 
 .empty-messages {
   text-align: center;
-  padding: 60px 20px;
+  color: #8B949E;
+  padding: 30px 0;
 }
 
-.empty-icon {
-  font-size: 64px;
-  margin-bottom: 15px;
-}
-
-.empty-messages p {
-  color: #a0aec0;
-  margin-bottom: 20px;
-  font-size: 16px;
+.empty-icon svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  color: #8B949E;
 }
 
 .btn-share-empty {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: #2F81F7;
+  color: #E6EDF3;
   border: none;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
   transition: all 0.2s;
 }
 
 .btn-share-empty:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-}
-
-.recent-messages-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  background: #1e5fd1;
 }
 
 .mini-message {
-  padding: 20px;
-  background: #f7fafc;
-  border-radius: 12px;
-  border-left: 4px solid #e2e8f0;
-  transition: all 0.2s;
+  background: #121821;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 148, 158, 0.1);
+  margin-bottom: 10px;
   cursor: pointer;
-}
-
-.mini-message:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transform: translateX(4px);
+  transition: all 0.2s;
 }
 
 .mini-message.unread {
-  background: #f0f4ff;
-  border-left-color: #667eea;
+  border-color: #2F81F7;
 }
 
 .mini-message.flagged {
-  background: #fffbeb;
-  border-left-color: #f59e0b;
+  border-color: #3FB950;
 }
 
 .mini-message-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .mini-date {
   font-size: 12px;
-  color: #a0aec0;
-}
-
-.mini-badges {
-  display: flex;
-  gap: 6px;
+  color: #8B949E;
 }
 
 .mini-badge {
-  padding: 3px 10px;
-  border-radius: 12px;
   font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 8px;
   font-weight: 600;
+  color: #E6EDF3;
+  margin-left: 4px;
 }
 
-.mini-badge.new {
-  background: #667eea;
-  color: white;
-}
-
-.mini-badge.starred {
-  background: #fef5e7;
-}
-
-.mini-badge.warning {
-  background: #fbbf24;
-  color: white;
-}
+.mini-badge.new { background: #2F81F7; }
+.mini-badge.starred { background: #3FB950; }
+.mini-badge.warning { background: #FF5E5E; }
 
 .mini-content {
-  color: #2d3748;
-  font-size: 15px;
-  line-height: 1.6;
-  margin-bottom: 12px;
+  font-size: 14px;
+  color: #E6EDF3;
+  margin-bottom: 6px;
 }
 
-.mini-footer {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.btn-quick-reply {
-  padding: 8px 16px;
-  background: white;
-  border: 2px solid #667eea;
-  color: #667eea;
+.mini-footer .btn-quick-reply {
+  padding: 6px 12px;
+  font-size: 12px;
   border-radius: 6px;
-  font-weight: 600;
-  font-size: 13px;
+  border: 1px solid rgba(47, 129, 247, 0.3);
+  background: rgba(47, 129, 247, 0.1);
+  color: #2F81F7;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.btn-quick-reply:hover {
-  background: #667eea;
-  color: white;
-}
-
-.insights-section {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin-bottom: 30px;
-}
-
-.insights-section h3 {
-  color: #2d3748;
-  font-size: 20px;
-  margin-bottom: 20px;
-}
-
-.insights-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.insight-card {
-  display: flex;
-  gap: 15px;
-  padding: 20px;
-  background: #f7fafc;
-  border-radius: 12px;
-  border: 2px solid #e2e8f0;
-}
-
-.insight-card.tip {
-  background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
-  border-color: #fbbf24;
-}
-
-.insight-icon {
-  font-size: 32px;
-  flex-shrink: 0;
-}
-
-.insight-content strong {
-  display: block;
-  color: #2d3748;
-  margin-bottom: 6px;
-  font-size: 15px;
-}
-
-.insight-content p {
-  color: #4a5568;
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 0;
-}
-
-.insight-link {
-  display: inline-block;
-  margin-top: 10px;
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.insight-link:hover {
-  text-decoration: underline;
+.mini-footer .btn-quick-reply:hover {
+  background: #2F81F7;
+  color: #E6EDF3;
+  box-shadow: 0 0 10px rgba(47, 129, 247, 0.2);
 }
 
 .account-section {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.account-section h3 {
-  color: #2d3748;
-  font-size: 20px;
-  margin-bottom: 20px;
+  background: #121821;
+  padding: 24px;
+  border-radius: 10px;
+  border: 1px solid rgba(139, 148, 158, 0.1);
 }
 
 .account-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
 }
 
 .account-item {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 15px;
-  background: #f7fafc;
-  border-radius: 8px;
 }
 
 .account-label {
-  font-size: 13px;
-  color: #718096;
-  font-weight: 500;
+  font-size: 12px;
+  color: #8B949E;
+  margin-bottom: 4px;
 }
 
 .account-value {
-  font-size: 15px;
-  color: #2d3748;
-  font-weight: 600;
-}
-
-.upgrade-link {
-  margin-left: 8px;
+  font-size: 14px;
+  color: #E6EDF3;
 }
 
 .upgrade-link a {
-  color: #667eea;
+  font-size: 12px;
+  color: #2F81F7;
   text-decoration: none;
-  font-size: 13px;
 }
 
 .upgrade-link a:hover {
   text-decoration: underline;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .dashboard-nav {
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px 20px;
-  }
-
-  .nav-links {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .nav-link {
-    font-size: 13px;
-    padding: 8px 12px;
-  }
-
-  .nav-actions {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .dashboard-content {
-    padding: 20px;
-  }
-
-  .welcome-card {
-    padding: 25px;
-  }
-
-  .welcome-content {
-    flex-direction: column;
-    gap: 15px;
-    text-align: center;
-  }
-
-  .welcome-card h1 {
-    font-size: 24px;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .actions-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .link-display-box {
-    flex-direction: column;
-  }
-
-  .social-share {
-    flex-direction: column;
-  }
-
-  .share-btn {
-    min-width: 100%;
-  }
-
-  .insights-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .account-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.stat-card,
-.action-card,
-.mini-message,
-.insight-card {
-  animation: fadeIn 0.5s ease-out;
-}
-
-/* Scrollbar personnalisée */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #667eea;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #5568d3;
-}
 </style>

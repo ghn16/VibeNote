@@ -65,7 +65,7 @@
           :class="{ active: currentTab === 'words' }"
           class="tab-btn"
         >
-          🚫 Mots interdits
+           Mots interdits
         </button>
       </div>
 
@@ -104,13 +104,13 @@
 
             <div v-if="report.status === 'pending'" class="report-actions">
               <button @click="resolveReport(report.id)" class="btn-resolve">
-                ✅ Résoudre
+                Résoudre
               </button>
               <button @click="dismissReport(report.id)" class="btn-dismiss">
-                ❌ Rejeter
+                 Rejeter
               </button>
               <button @click="banMessageAuthor(report)" class="btn-ban">
-                🚫 Bannir l'auteur
+                Bannir l'auteur
               </button>
             </div>
           </div>
@@ -302,48 +302,60 @@ async function removeWord(wordId) {
 </script>
 
 <style scoped>
+
+/* ===============================
+   ADMIN — Dark Secure Theme
+   =============================== */
+
 .admin-container {
   min-height: 100vh;
-  background: #f7fafc;
+  background: #0B0F14;
+  color: #E6EDF3;
 }
 
+/* Navigation */
 .admin-nav {
-  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-  color: white;
+  background: #121821;
   padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid rgba(139, 148, 158, 0.1);
 }
 
 .admin-nav h2 {
-  font-size: 24px;
+  font-size: 22px;
+  font-weight: 600;
 }
 
 .back-btn {
-  color: white;
+  color: #E6EDF3;
   text-decoration: none;
   padding: 10px 20px;
   border-radius: 8px;
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  border: 1px solid rgba(139, 148, 158, 0.2);
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  border-color: #2F81F7;
+  box-shadow: 0 0 0 1px rgba(47, 129, 247, 0.4);
 }
 
 .spacer {
   width: 120px;
 }
 
+/* Content */
 .admin-content {
   padding: 40px;
   max-width: 1400px;
   margin: 0 auto;
 }
 
+/* Stats */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -352,98 +364,99 @@ async function removeWord(wordId) {
 }
 
 .stat-card {
-  background: white;
+  background: #121821;
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(139, 148, 158, 0.1);
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
 .stat-card.alert {
-  background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
-}
-
-.stat-icon {
-  font-size: 40px;
+  border-color: rgba(63, 185, 80, 0.5);
 }
 
 .stat-info h3 {
-  font-size: 32px;
-  color: #2d3748;
+  font-size: 30px;
   margin-bottom: 5px;
 }
 
 .stat-info p {
-  color: #718096;
+  color: #8B949E;
   font-size: 14px;
 }
 
+/* Tabs */
 .tabs {
   display: flex;
   gap: 10px;
   margin-bottom: 30px;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 1px solid rgba(139, 148, 158, 0.15);
 }
 
 .tab-btn {
-  padding: 15px 25px;
+  padding: 14px 22px;
   border: none;
   background: transparent;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  color: #718096;
+  color: #8B949E;
   cursor: pointer;
-  border-bottom: 3px solid transparent;
-  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border 0.2s;
 }
 
 .tab-btn:hover {
-  color: #2d3748;
+  color: #E6EDF3;
 }
 
 .tab-btn.active {
-  color: #667eea;
-  border-bottom-color: #667eea;
+  color: #2F81F7;
+  border-bottom-color: #2F81F7;
 }
 
+/* Panels */
 .tab-content {
-  background: white;
+  background: #121821;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(139, 148, 158, 0.1);
 }
 
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: #a0aec0;
+  color: #8B949E;
 }
 
-.reports-list, .users-list {
+/* Reports & Users */
+.reports-list,
+.users-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.report-card {
+.report-card,
+.user-card,
+.word-item {
   padding: 20px;
-  border: 2px solid #e2e8f0;
   border-radius: 12px;
-  background: #f7fafc;
+  background: #121821;
+  border: 1px solid rgba(139, 148, 158, 0.15);
 }
 
+/* Report states */
 .report-card.status-pending {
-  border-color: #fbbf24;
-  background: #fffbeb;
+  border-color: rgba(47, 129, 247, 0.4);
 }
 
 .report-card.status-resolved {
-  border-color: #48bb78;
-  background: #f0fff4;
+  border-color: rgba(63, 185, 80, 0.5);
 }
 
+/* Report content */
 .report-header {
   display: flex;
   justify-content: space-between;
@@ -457,90 +470,79 @@ async function removeWord(wordId) {
 
 .report-date {
   font-size: 13px;
-  color: #a0aec0;
+  color: #8B949E;
 }
 
-.report-message, .report-reason {
-  margin-bottom: 12px;
-}
-
-.report-message strong, .report-reason strong {
+.report-message strong,
+.report-reason strong {
   display: block;
-  color: #2d3748;
   margin-bottom: 5px;
 }
 
-.report-message p, .report-reason p {
-  color: #4a5568;
-  background: white;
+.report-message p,
+.report-reason p {
+  background: #0B0F14;
   padding: 10px;
   border-radius: 6px;
+  color: #E6EDF3;
 }
 
 .report-author {
   font-size: 14px;
-  color: #718096;
+  color: #8B949E;
   margin-bottom: 15px;
 }
 
-.report-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-resolve, .btn-dismiss, .btn-ban, .btn-view, .btn-add, .btn-remove {
+/* Buttons */
+.btn-resolve,
+.btn-dismiss,
+.btn-ban,
+.btn-view,
+.btn-add,
+.btn-remove {
   padding: 10px 20px;
-  border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  border: none;
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+
+.btn-view,
+.btn-add {
+  background: #2F81F7;
+  color: #fff;
 }
 
 .btn-resolve {
-  background: #48bb78;
-  color: white;
-}
-
-.btn-resolve:hover {
-  background: #38a169;
-}
-
-.btn-dismiss {
-  background: #e2e8f0;
-  color: #4a5568;
-}
-
-.btn-dismiss:hover {
-  background: #cbd5e0;
+  background: #3FB950;
+  color: #fff;
 }
 
 .btn-ban {
-  background: #e53e3e;
-  color: white;
+  background: #da3633;
+  color: #fff;
 }
 
+.btn-dismiss,
+.btn-remove {
+  background: #1c2430;
+  color: #8B949E;
+}
+
+.btn-view:hover,
+.btn-add:hover,
+.btn-resolve:hover,
 .btn-ban:hover {
-  background: #c53030;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
-.btn-view {
-  background: #667eea;
-  color: white;
-}
-
-.btn-view:hover {
-  background: #5568d3;
-}
-
+/* User */
 .user-card {
   display: grid;
   grid-template-columns: 1fr auto auto;
   gap: 20px;
   align-items: center;
-  padding: 20px;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
 }
 
 .user-info {
@@ -550,130 +552,39 @@ async function removeWord(wordId) {
 }
 
 .user-avatar {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #2F81F7;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
   font-weight: bold;
 }
 
-.user-meta {
-  font-size: 13px;
-  color: #718096;
-  margin-top: 5px;
-}
-
+.user-meta,
 .user-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  font-size: 14px;
-  color: #4a5568;
+  font-size: 13px;
+  color: #8B949E;
 }
 
-.user-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.add-word-form {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 30px;
-}
-
-.add-word-form input {
-  flex: 1;
-  padding: 12px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 15px;
-}
-
+/* Forms */
+.add-word-form input,
 .add-word-form select {
   padding: 12px 16px;
-  border: 2px solid #e2e8f0;
   border-radius: 8px;
-  font-size: 15px;
-  background: white;
-  cursor: pointer;
+  border: 1px solid rgba(139, 148, 158, 0.2);
+  background: #0B0F14;
+  color: #E6EDF3;
 }
 
-.btn-add {
-  padding: 12px 24px;
-  background: #48bb78;
-  color: white;
-}
-
-.btn-add:hover {
-  background: #38a169;
-}
-
-.words-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.word-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  border-radius: 8px;
-  border: 2px solid #e2e8f0;
-}
-
-.word-item.severity-high {
-  border-color: #fc8181;
-  background: #fff5f5;
-}
-
-.word-item.severity-medium {
-  border-color: #fbbf24;
-  background: #fffbeb;
-}
-
-.word-item.severity-low {
-  border-color: #68d391;
-  background: #f0fff4;
-}
-
-.word-text {
-  font-weight: 600;
-  color: #2d3748;
-}
-
-.word-severity {
-  font-size: 14px;
-}
-
-.btn-remove {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #e2e8f0;
-  color: #718096;
-  font-size: 18px;
-}
-
-.btn-remove:hover {
-  background: #fc8181;
-  color: white;
-}
-
+/* Responsive */
 @media (max-width: 1024px) {
   .user-card {
     grid-template-columns: 1fr;
   }
-
-  .user-actions {
-    justify-content: flex-start;
-  }
 }
+
+
 </style>
+

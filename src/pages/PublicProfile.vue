@@ -123,9 +123,13 @@ async function sendMessage() {
 </script>
 
 <style scoped>
+
+/* ===========================
+   Public Profile - Dark Theme
+=========================== */
 .public-profile-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #0B0F14;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -133,12 +137,12 @@ async function sendMessage() {
 }
 
 .profile-card, .error-card {
-  background: white;
+  background: #121521;
   border-radius: 16px;
   padding: 40px;
   max-width: 600px;
   width: 100%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
 .profile-header {
@@ -162,17 +166,17 @@ async function sendMessage() {
 
 .profile-header h1 {
   font-size: 28px;
-  color: #2d3748;
+  color: #E6EDF3;
   margin-bottom: 10px;
 }
 
 .bio {
-  color: #718096;
+  color: #A0AEC0;
   font-size: 16px;
 }
 
 .message-form h2 {
-  color: #2d3748;
+  color: #E6EDF3;
   font-size: 20px;
   margin-bottom: 15px;
 }
@@ -180,12 +184,14 @@ async function sendMessage() {
 textarea {
   width: 100%;
   padding: 15px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #1E2230;
   border-radius: 12px;
   font-size: 15px;
   font-family: inherit;
   resize: vertical;
   margin-bottom: 8px;
+  background: #0F121A;
+  color: #E6EDF3;
 }
 
 textarea:focus {
@@ -196,7 +202,7 @@ textarea:focus {
 .char-count {
   text-align: right;
   font-size: 13px;
-  color: #a0aec0;
+  color: #718096;
   margin-bottom: 15px;
 }
 
@@ -223,16 +229,16 @@ textarea:focus {
 }
 
 .error-message {
-  background: #fee;
-  color: #c33;
+  background: #3C1F1F;
+  color: #F56565;
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 15px;
 }
 
 .success-message {
-  background: #d4edda;
-  color: #155724;
+  background: #1F3D2F;
+  color: #48BB78;
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 15px;
@@ -243,7 +249,7 @@ textarea:focus {
   text-align: center;
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #1E2230;
 }
 
 .footer-note p {
@@ -261,8 +267,8 @@ textarea:focus {
 .spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #667eea;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -270,4 +276,5 @@ textarea:focus {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
 </style>
