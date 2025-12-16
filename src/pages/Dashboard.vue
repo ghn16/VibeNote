@@ -17,6 +17,8 @@
         <router-link to="/my-link" class="nav-link">Mon Lien</router-link>
         <router-link to="/public-replies" class="nav-link">
           Profil Public
+          <!-- Dans la navigation ou dans les actions rapides -->
+          <router-link to="/search" class="nav-link"> 🔍 Rechercher </router-link>
           <span v-if="messagesStore.publicReplies?.length > 0" class="badge badge-public">
             {{ messagesStore.publicReplies.length }}
           </span>
@@ -56,7 +58,12 @@
         <div class="stat-card" @click="$router.push('/messages')">
           <div class="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
             </svg>
           </div>
           <div class="stat-info">
@@ -71,22 +78,30 @@
         <div class="stat-card highlight" @click="$router.push('/messages?filter=unread')">
           <div class="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              />
             </svg>
           </div>
           <div class="stat-info">
             <h3>{{ messagesStore.unreadCount }}</h3>
             <p>Non lus</p>
           </div>
-          <button v-if="messagesStore.unreadCount > 0" class="stat-action">
-            Lire maintenant
-          </button>
+          <button v-if="messagesStore.unreadCount > 0" class="stat-action">Lire maintenant</button>
         </div>
 
         <div class="stat-card stat-card-public" @click="$router.push('/public-replies')">
           <div class="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              />
             </svg>
           </div>
           <div class="stat-info">
@@ -101,7 +116,9 @@
         <div class="stat-card" @click="$router.push('/messages?filter=starred')">
           <div class="stat-icon">
             <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              <path
+                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+              />
             </svg>
           </div>
           <div class="stat-info">
@@ -118,9 +135,7 @@
             <h3>🌟 Votre Profil Public</h3>
             <p class="section-subtitle">Partagez vos réponses avec le monde</p>
           </div>
-          <router-link to="/public-replies" class="btn-view-public">
-            Voir le profil →
-          </router-link>
+          <router-link to="/public-replies" class="btn-view-public"> Voir le profil → </router-link>
         </div>
 
         <div class="public-stats">
@@ -168,10 +183,17 @@
 
         <div v-else class="empty-public-profile">
           <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+            />
           </svg>
           <p>Pas encore de réponses publiques</p>
-          <p class="empty-hint">Répondez à des messages en mode "Public" pour commencer à construire votre profil</p>
+          <p class="empty-hint">
+            Répondez à des messages en mode "Public" pour commencer à construire votre profil
+          </p>
         </div>
       </div>
 
@@ -182,7 +204,12 @@
           <router-link to="/messages" class="action-card">
             <div class="action-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
               </svg>
             </div>
             <div class="action-content">
@@ -194,7 +221,12 @@
           <router-link to="/my-link" class="action-card">
             <div class="action-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                />
               </svg>
             </div>
             <div class="action-content">
@@ -206,7 +238,12 @@
           <router-link to="/public-replies" class="action-card action-card-featured">
             <div class="action-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
               </svg>
             </div>
             <div class="action-content">
@@ -218,7 +255,12 @@
           <router-link to="/analytics" class="action-card">
             <div class="action-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                />
               </svg>
             </div>
             <div class="action-content">
@@ -233,12 +275,26 @@
       <div class="link-section">
         <div class="link-header">
           <h3>Votre lien unique</h3>
-          <button @click="toggleSoundNotif" class="btn-sound" :title="notificationsStore.soundEnabled ? 'Désactiver le son' : 'Activer le son'">
-            <svg v-if="notificationsStore.soundEnabled" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          <button
+            @click="toggleSoundNotif"
+            class="btn-sound"
+            :title="notificationsStore.soundEnabled ? 'Désactiver le son' : 'Activer le son'"
+          >
+            <svg
+              v-if="notificationsStore.soundEnabled"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              width="20"
+              height="20"
+            >
+              <path
+                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"
+              />
             </svg>
             <svg v-else viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-              <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+              <path
+                d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"
+              />
             </svg>
           </button>
         </div>
@@ -253,18 +309,10 @@
         <p class="link-hint">Partagez ce lien pour recevoir des messages anonymes</p>
 
         <div class="social-share">
-          <a :href="whatsappShare" target="_blank" class="share-btn whatsapp">
-            WhatsApp
-          </a>
-          <a :href="twitterShare" target="_blank" class="share-btn twitter">
-            Twitter
-          </a>
-          <a :href="facebookShare" target="_blank" class="share-btn facebook">
-            Facebook
-          </a>
-          <button @click="shareNative" class="share-btn native">
-            Partager
-          </button>
+          <a :href="whatsappShare" target="_blank" class="share-btn whatsapp"> WhatsApp </a>
+          <a :href="twitterShare" target="_blank" class="share-btn twitter"> Twitter </a>
+          <a :href="facebookShare" target="_blank" class="share-btn facebook"> Facebook </a>
+          <button @click="shareNative" class="share-btn native">Partager</button>
         </div>
       </div>
 
@@ -280,7 +328,12 @@
         <div v-if="recentMessages.length === 0" class="empty-messages">
           <div class="empty-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+              />
             </svg>
           </div>
           <p>Aucun message pour le moment</p>
@@ -344,136 +397,141 @@
 
 <script setup>
 // <script setup> section optimisée pour Dashboard.vue
-import { ref, computed, onMounted, onBeforeUnmount } from "vue"
-import { useRouter } from "vue-router"
-import { useAuthStore } from "@/stores/auth"
-import { useMessagesStore } from "@/stores/messages"
-import { useNotificationsStore } from "@/stores/notifications"
-import NotificationBell from "@/components/NotificationBell.vue"
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
+import { useMessagesStore } from "@/stores/messages";
+import { useNotificationsStore } from "@/stores/notifications";
+import NotificationBell from "@/components/NotificationBell.vue";
 
-const router = useRouter()
-const auth = useAuthStore()
-const messagesStore = useMessagesStore()
-const notificationsStore = useNotificationsStore()
+const router = useRouter();
+const auth = useAuthStore();
+const messagesStore = useMessagesStore();
+const notificationsStore = useNotificationsStore();
 
-const linkInput = ref(null)
-const copied = ref(false)
-let isMounted = false
+const linkInput = ref(null);
+const copied = ref(false);
+let isMounted = false;
 
-const username = computed(() => auth.user?.profile?.username || "Utilisateur")
+const username = computed(() => auth.user?.profile?.username || "Utilisateur");
 
 const uniqueLink = computed(() => {
-  const link = auth.user?.profile?.unique_link
-  return link ? `${window.location.origin}/${link}` : "Chargement..."
-})
+  const link = auth.user?.profile?.unique_link;
+  return link ? `${window.location.origin}/${link}` : "Chargement...";
+});
 
 const recentMessages = computed(() => {
-  return messagesStore.messages.slice(0, 5)
-})
+  return messagesStore.messages.slice(0, 5);
+});
 
 const recentMessagesCount = computed(() => {
-  const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-  return messagesStore.messages.filter((m) => new Date(m.created_at) > oneWeekAgo).length
-})
+  const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  return messagesStore.messages.filter((m) => new Date(m.created_at) > oneWeekAgo).length;
+});
 
 const recentPublicReplies = computed(() => {
-  return (messagesStore.publicReplies || []).slice(0, 3)
-})
+  return (messagesStore.publicReplies || []).slice(0, 3);
+});
 
 const totalReactions = computed(() => {
   return (messagesStore.publicReplies || []).reduce((total, reply) => {
-    return total + (reply.reactions?.love || 0) + (reply.reactions?.like || 0) + (reply.reactions?.fire || 0)
-  }, 0)
-})
+    return (
+      total +
+      (reply.reactions?.love || 0) +
+      (reply.reactions?.like || 0) +
+      (reply.reactions?.fire || 0)
+    );
+  }, 0);
+});
 
 const totalLoveReactions = computed(() => {
   return (messagesStore.publicReplies || []).reduce((total, reply) => {
-    return total + (reply.reactions?.love || 0)
-  }, 0)
-})
+    return total + (reply.reactions?.love || 0);
+  }, 0);
+});
 
 const totalLikeReactions = computed(() => {
   return (messagesStore.publicReplies || []).reduce((total, reply) => {
-    return total + (reply.reactions?.like || 0)
-  }, 0)
-})
+    return total + (reply.reactions?.like || 0);
+  }, 0);
+});
 
 const totalFireReactions = computed(() => {
   return (messagesStore.publicReplies || []).reduce((total, reply) => {
-    return total + (reply.reactions?.fire || 0)
-  }, 0)
-})
+    return total + (reply.reactions?.fire || 0);
+  }, 0);
+});
 
 const totalFavorites = computed(() => {
   return (messagesStore.publicReplies || []).reduce((total, reply) => {
-    return total + (reply.favorites_count || 0)
-  }, 0)
-})
+    return total + (reply.favorites_count || 0);
+  }, 0);
+});
 
 const formattedDate = computed(() => {
-  if (!auth.user?.profile?.created_at) return "N/A"
+  if (!auth.user?.profile?.created_at) return "N/A";
 
-  const date = new Date(auth.user.profile.created_at)
+  const date = new Date(auth.user.profile.created_at);
   return date.toLocaleDateString("fr-FR", {
     year: "numeric",
     month: "long",
     day: "numeric",
-  })
-})
+  });
+});
 
 const whatsappShare = computed(() => {
-  return `https://wa.me/?text=Envoie-moi un message anonyme sur VibeNote ! ${uniqueLink.value}`
-})
+  return `https://wa.me/?text=Envoie-moi un message anonyme sur VibeNote ! ${uniqueLink.value}`;
+});
 
 const twitterShare = computed(() => {
   return `https://twitter.com/intent/tweet?text=Envoie-moi un message anonyme !&url=${encodeURIComponent(
     uniqueLink.value
-  )}`
-})
+  )}`;
+});
 
 const facebookShare = computed(() => {
-  return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(uniqueLink.value)}`
-})
+  return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(uniqueLink.value)}`;
+});
 
 onMounted(async () => {
-  isMounted = true
+  isMounted = true;
 
   try {
     // Charger les données
-    await messagesStore.fetchMessages()
-    await messagesStore.loadPublicReplies()
+    await messagesStore.fetchMessages();
+    await messagesStore.loadPublicReplies();
 
     // Initialiser les notifications seulement si toujours monté
     if (isMounted) {
-      notificationsStore.loadPreferences()
-      notificationsStore.initRealtime(auth.user.id)
-      await notificationsStore.requestNotificationPermission()
-      notificationsStore.unreadCount = messagesStore.unreadCount
+      notificationsStore.loadPreferences();
+      notificationsStore.initRealtime(auth.user.id);
+      await notificationsStore.requestNotificationPermission();
+      notificationsStore.unreadCount = messagesStore.unreadCount;
     }
   } catch (error) {
-    console.error('Erreur initialisation dashboard:', error)
+    console.error("Erreur initialisation dashboard:", error);
   }
-})
+});
 
 onBeforeUnmount(async () => {
-  isMounted = false
-  await notificationsStore.cleanup()
-})
+  isMounted = false;
+  await notificationsStore.cleanup();
+});
 
 async function handleLogout() {
-  await notificationsStore.cleanup()
-  const result = await auth.logout()
+  await notificationsStore.cleanup();
+  const result = await auth.logout();
   if (result.success) {
-    router.push("/login")
+    router.push("/login");
   }
 }
 
 function copyLink() {
-  navigator.clipboard.writeText(uniqueLink.value)
-  copied.value = true
+  navigator.clipboard.writeText(uniqueLink.value);
+  copied.value = true;
   setTimeout(() => {
-    copied.value = false
-  }, 2000)
+    copied.value = false;
+  }, 2000);
 }
 
 async function shareNative() {
@@ -483,53 +541,53 @@ async function shareNative() {
         title: "Mon profil VibeNote",
         text: "Envoie-moi un message anonyme !",
         url: uniqueLink.value,
-      })
+      });
     } catch (err) {
-      console.log("Partage annulé")
+      console.log("Partage annulé");
     }
   } else {
-    copyLink()
+    copyLink();
   }
 }
 
 function formatDate(dateString) {
-  const date = new Date(dateString)
-  const now = new Date()
-  const diff = now - date
-  const minutes = Math.floor(diff / 60000)
-  const hours = Math.floor(diff / 3600000)
-  const days = Math.floor(diff / 86400000)
+  const date = new Date(dateString);
+  const now = new Date();
+  const diff = now - date;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
 
-  if (minutes < 1) return "À l'instant"
-  if (minutes < 60) return `Il y a ${minutes} min`
-  if (hours < 24) return `Il y a ${hours}h`
-  if (days < 7) return `Il y a ${days}j`
+  if (minutes < 1) return "À l'instant";
+  if (minutes < 60) return `Il y a ${minutes} min`;
+  if (hours < 24) return `Il y a ${hours}h`;
+  if (days < 7) return `Il y a ${days}j`;
 
   return date.toLocaleDateString("fr-FR", {
     day: "numeric",
     month: "short",
-  })
+  });
 }
 
 function truncate(text, length) {
-  if (!text) return ''
-  if (text.length <= length) return text
-  return text.substring(0, length) + "..."
+  if (!text) return "";
+  if (text.length <= length) return text;
+  return text.substring(0, length) + "...";
 }
 
 function goToMessage(messageId) {
-  router.push(`/messages#${messageId}`)
+  router.push(`/messages#${messageId}`);
 }
 
 function quickReply(message) {
   router.push({
     path: "/messages",
     query: { reply: message.id },
-  })
+  });
 }
 
 function toggleSoundNotif() {
-  notificationsStore.toggleSound()
+  notificationsStore.toggleSound();
 }
 </script>
 
@@ -545,7 +603,7 @@ function toggleSoundNotif() {
 
 .dashboard-container {
   min-height: 100vh;
-  background: #0B0F14;
+  background: #0b0f14;
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
@@ -571,7 +629,7 @@ function toggleSoundNotif() {
   font-size: 20px;
   margin: 0;
   font-weight: 700;
-  color: #E6EDF3;
+  color: #e6edf3;
 }
 
 .nav-links {
@@ -580,7 +638,7 @@ function toggleSoundNotif() {
 }
 
 .nav-link {
-  color: #8B949E;
+  color: #8b949e;
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 6px;
@@ -596,24 +654,24 @@ function toggleSoundNotif() {
 
 .nav-link:hover {
   background: rgba(47, 129, 247, 0.1);
-  color: #E6EDF3;
+  color: #e6edf3;
 }
 
 .nav-link.router-link-active {
   background: rgba(47, 129, 247, 0.15);
-  color: #2F81F7;
+  color: #2f81f7;
 }
 
 .nav-link.admin-link {
   background: rgba(63, 185, 80, 0.1);
-  color: #3FB950;
+  color: #3fb950;
   border: 1px solid rgba(63, 185, 80, 0.2);
 }
 
 .badge,
 .badge-public {
-  background: #2F81F7;
-  color: #E6EDF3;
+  background: #2f81f7;
+  color: #e6edf3;
   padding: 2px 7px;
   border-radius: 10px;
   font-size: 11px;
@@ -629,7 +687,7 @@ function toggleSoundNotif() {
 .btn-logout {
   padding: 8px 18px;
   background: transparent;
-  color: #8B949E;
+  color: #8b949e;
   border: 1px solid rgba(139, 148, 158, 0.3);
   border-radius: 6px;
   font-weight: 600;
@@ -639,8 +697,8 @@ function toggleSoundNotif() {
 }
 
 .btn-logout:hover {
-  border-color: #2F81F7;
-  color: #2F81F7;
+  border-color: #2f81f7;
+  color: #2f81f7;
 }
 
 /* Contenu principal */
@@ -683,12 +741,12 @@ function toggleSoundNotif() {
   font-size: 26px;
   margin-bottom: 6px;
   font-weight: 700;
-  color: #E6EDF3;
+  color: #e6edf3;
 }
 
 .subtitle {
   font-size: 15px;
-  color: #8B949E;
+  color: #8b949e;
 }
 
 .premium-badge {
@@ -698,7 +756,7 @@ function toggleSoundNotif() {
   border-radius: 16px;
   font-weight: 600;
   font-size: 13px;
-  color: #3FB950;
+  color: #3fb950;
 }
 
 /* Stats grid */
@@ -739,7 +797,7 @@ function toggleSoundNotif() {
   width: 36px;
   height: 36px;
   margin-bottom: 12px;
-  color: #2F81F7;
+  color: #2f81f7;
 }
 
 .stat-icon svg {
@@ -751,12 +809,12 @@ function toggleSoundNotif() {
   font-size: 30px;
   margin-bottom: 4px;
   font-weight: 700;
-  color: #E6EDF3;
+  color: #e6edf3;
 }
 
 .stat-info p {
   font-size: 13px;
-  color: #8B949E;
+  color: #8b949e;
 }
 
 .stat-trend {
@@ -764,7 +822,7 @@ function toggleSoundNotif() {
 }
 
 .trend-up {
-  color: #3FB950;
+  color: #3fb950;
   font-weight: 600;
   font-size: 12px;
 }
@@ -774,7 +832,7 @@ function toggleSoundNotif() {
   padding: 7px 14px;
   background: rgba(47, 129, 247, 0.15);
   border: 1px solid rgba(47, 129, 247, 0.3);
-  color: #2F81F7;
+  color: #2f81f7;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
@@ -783,8 +841,8 @@ function toggleSoundNotif() {
 }
 
 .stat-action:hover {
-  background: #2F81F7;
-  color: #E6EDF3;
+  background: #2f81f7;
+  color: #e6edf3;
   box-shadow: 0 0 15px rgba(47, 129, 247, 0.3);
 }
 
@@ -794,7 +852,7 @@ function toggleSoundNotif() {
 
 .reaction-count {
   font-size: 12px;
-  color: #8B949E;
+  color: #8b949e;
 }
 
 /* Profil public */
@@ -806,19 +864,19 @@ function toggleSoundNotif() {
 }
 
 .section-header h3 {
-  color: #E6EDF3;
+  color: #e6edf3;
   font-size: 16px;
   font-weight: 600;
 }
 
 .section-subtitle {
   font-size: 13px;
-  color: #8B949E;
+  color: #8b949e;
 }
 
 .btn-view-public {
   font-size: 13px;
-  color: #2F81F7;
+  color: #2f81f7;
   text-decoration: none;
   font-weight: 600;
   white-space: nowrap;
@@ -851,16 +909,16 @@ function toggleSoundNotif() {
 .public-stat-value {
   font-size: 18px;
   font-weight: 700;
-  color: #E6EDF3;
+  color: #e6edf3;
 }
 
 .public-stat-label {
   font-size: 12px;
-  color: #8B949E;
+  color: #8b949e;
 }
 
 .recent-public-replies h4 {
-  color: #E6EDF3;
+  color: #e6edf3;
   font-size: 14px;
   margin-bottom: 10px;
 }
@@ -886,7 +944,7 @@ function toggleSoundNotif() {
 
 .reply-preview-text {
   font-size: 13px;
-  color: #E6EDF3;
+  color: #e6edf3;
   margin-bottom: 8px;
   line-height: 1.4;
   word-wrap: break-word;
@@ -896,14 +954,14 @@ function toggleSoundNotif() {
   display: flex;
   gap: 10px;
   font-size: 12px;
-  color: #8B949E;
+  color: #8b949e;
   flex-wrap: wrap;
 }
 
 .empty-public-profile {
   text-align: center;
   padding: 30px 10px;
-  color: #8B949E;
+  color: #8b949e;
 }
 
 .empty-public-profile .empty-icon {
@@ -924,7 +982,7 @@ function toggleSoundNotif() {
 
 /* Actions rapides */
 .quick-actions h3 {
-  color: #E6EDF3;
+  color: #e6edf3;
   margin-bottom: 18px;
   font-size: 17px;
   font-weight: 600;
@@ -967,7 +1025,7 @@ function toggleSoundNotif() {
 .action-icon {
   width: 36px;
   height: 36px;
-  color: #2F81F7;
+  color: #2f81f7;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -981,14 +1039,14 @@ function toggleSoundNotif() {
 
 .action-content strong {
   display: block;
-  color: #E6EDF3;
+  color: #e6edf3;
   font-size: 15px;
   margin-bottom: 2px;
 }
 
 .action-content p {
   font-size: 13px;
-  color: #8B949E;
+  color: #8b949e;
   margin: 0;
 }
 
@@ -1001,7 +1059,7 @@ function toggleSoundNotif() {
 }
 
 .link-header h3 {
-  color: #E6EDF3;
+  color: #e6edf3;
   font-size: 16px;
   font-weight: 600;
 }
@@ -1009,7 +1067,7 @@ function toggleSoundNotif() {
 .btn-sound {
   background: rgba(47, 129, 247, 0.1);
   border: 1px solid rgba(47, 129, 247, 0.3);
-  color: #2F81F7;
+  color: #2f81f7;
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
@@ -1020,8 +1078,8 @@ function toggleSoundNotif() {
 }
 
 .btn-sound:hover {
-  background: #2F81F7;
-  color: #E6EDF3;
+  background: #2f81f7;
+  color: #e6edf3;
   box-shadow: 0 0 12px rgba(47, 129, 247, 0.2);
 }
 
@@ -1037,15 +1095,15 @@ function toggleSoundNotif() {
   border-radius: 8px;
   border: 1px solid rgba(139, 148, 158, 0.2);
   background: rgba(11, 15, 20, 0.5);
-  color: #E6EDF3;
+  color: #e6edf3;
   font-size: 14px;
   min-width: 0;
 }
 
 .btn-copy {
   padding: 10px 16px;
-  background: #2F81F7;
-  color: #E6EDF3;
+  background: #2f81f7;
+  color: #e6edf3;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -1061,7 +1119,7 @@ function toggleSoundNotif() {
 
 .link-hint {
   font-size: 13px;
-  color: #8B949E;
+  color: #8b949e;
   margin-bottom: 10px;
 }
 
@@ -1076,7 +1134,7 @@ function toggleSoundNotif() {
   border-radius: 6px;
   font-size: 13px;
   font-weight: 600;
-  color: #E6EDF3;
+  color: #e6edf3;
   text-decoration: none;
   transition: all 0.2s;
   border: none;
@@ -1086,19 +1144,35 @@ function toggleSoundNotif() {
   text-align: center;
 }
 
-.share-btn.whatsapp { background: #25D366; }
-.share-btn.whatsapp:hover { opacity: 0.85; }
-.share-btn.twitter { background: #2F81F7; }
-.share-btn.twitter:hover { opacity: 0.85; }
-.share-btn.facebook { background: #3B5998; }
-.share-btn.facebook:hover { opacity: 0.85; }
-.share-btn.native { background: #8B949E; }
-.share-btn.native:hover { opacity: 0.85; }
+.share-btn.whatsapp {
+  background: #25d366;
+}
+.share-btn.whatsapp:hover {
+  opacity: 0.85;
+}
+.share-btn.twitter {
+  background: #2f81f7;
+}
+.share-btn.twitter:hover {
+  opacity: 0.85;
+}
+.share-btn.facebook {
+  background: #3b5998;
+}
+.share-btn.facebook:hover {
+  opacity: 0.85;
+}
+.share-btn.native {
+  background: #8b949e;
+}
+.share-btn.native:hover {
+  opacity: 0.85;
+}
 
 /* Messages récents */
 .link-see-all {
   font-size: 13px;
-  color: #2F81F7;
+  color: #2f81f7;
   text-decoration: none;
   transition: all 0.2s;
   white-space: nowrap;
@@ -1110,7 +1184,7 @@ function toggleSoundNotif() {
 
 .empty-messages {
   text-align: center;
-  color: #8B949E;
+  color: #8b949e;
   padding: 30px 0;
 }
 
@@ -1124,7 +1198,7 @@ function toggleSoundNotif() {
 .empty-icon svg {
   width: 100%;
   height: 100%;
-  color: #8B949E;
+  color: #8b949e;
 }
 
 .empty-messages p {
@@ -1134,8 +1208,8 @@ function toggleSoundNotif() {
 .btn-share-empty {
   margin-top: 12px;
   padding: 8px 16px;
-  background: #2F81F7;
-  color: #E6EDF3;
+  background: #2f81f7;
+  color: #e6edf3;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -1191,7 +1265,7 @@ function toggleSoundNotif() {
 
 .mini-date {
   font-size: 12px;
-  color: #8B949E;
+  color: #8b949e;
 }
 
 .mini-badges {
@@ -1205,16 +1279,22 @@ function toggleSoundNotif() {
   padding: 2px 6px;
   border-radius: 8px;
   font-weight: 600;
-  color: #E6EDF3;
+  color: #e6edf3;
 }
 
-.mini-badge.new { background: #2F81F7; }
-.mini-badge.starred { background: #3FB950; }
-.mini-badge.warning { background: #FF5E5E; }
+.mini-badge.new {
+  background: #2f81f7;
+}
+.mini-badge.starred {
+  background: #3fb950;
+}
+.mini-badge.warning {
+  background: #ff5e5e;
+}
 
 .mini-content {
   font-size: 14px;
-  color: #E6EDF3;
+  color: #e6edf3;
   margin-bottom: 8px;
   line-height: 1.5;
   word-wrap: break-word;
@@ -1232,21 +1312,21 @@ function toggleSoundNotif() {
   border-radius: 6px;
   border: 1px solid rgba(47, 129, 247, 0.3);
   background: rgba(47, 129, 247, 0.1);
-  color: #2F81F7;
+  color: #2f81f7;
   cursor: pointer;
   transition: all 0.2s;
   font-weight: 600;
 }
 
 .btn-quick-reply:hover {
-  background: #2F81F7;
-  color: #E6EDF3;
+  background: #2f81f7;
+  color: #e6edf3;
   box-shadow: 0 0 10px rgba(47, 129, 247, 0.2);
 }
 
 /* Compte */
 .account-section h3 {
-  color: #E6EDF3;
+  color: #e6edf3;
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 14px;
@@ -1266,12 +1346,12 @@ function toggleSoundNotif() {
 
 .account-label {
   font-size: 12px;
-  color: #8B949E;
+  color: #8b949e;
 }
 
 .account-value {
   font-size: 14px;
-  color: #E6EDF3;
+  color: #e6edf3;
   font-weight: 500;
   word-wrap: break-word;
 }
@@ -1282,7 +1362,7 @@ function toggleSoundNotif() {
 
 .upgrade-link a {
   font-size: 12px;
-  color: #2F81F7;
+  color: #2f81f7;
   text-decoration: none;
 }
 

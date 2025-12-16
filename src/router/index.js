@@ -10,6 +10,18 @@ const routes = [
     name: 'Landing',
     component: () => import('@/pages/Landing.vue')
   },
+  // Dans votre fichier router/index.js
+{
+  path: '/search',
+  name: 'SearchUsers',
+  component: () => import('@/pages/SearchUsers.vue'),
+  meta: { requiresAuth: true }
+},
+{
+  path: '/profile/:username',
+  name: 'PublicUserProfile',
+  component: () => import('@/pages/PublicUserProfile.vue')
+},
   {
     path: '/login',
     name: 'Login',
@@ -20,6 +32,7 @@ const routes = [
     name: 'Signup',
     component: () => import('@/pages/Signup.vue')
   },
+
 
   // =====================================================
   // ROUTES AUTHENTIFIÉES
@@ -48,6 +61,7 @@ const routes = [
     component: () => import('@/pages/Analytics.vue'),
     meta: { requiresAuth: true }
   },
+
   {
     path: '/settings',
     name: 'Settings',
