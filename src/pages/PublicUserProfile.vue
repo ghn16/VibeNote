@@ -1,6 +1,5 @@
 <template>
   <div class="public-profile-container">
-    <!-- Navigation -->
     <nav class="profile-nav">
       <router-link to="/search" class="back-btn">
         ← Retour à la recherche
@@ -9,13 +8,11 @@
       <div class="spacer"></div>
     </nav>
 
-    <!-- Loading -->
     <div v-if="loading" class="loading">
       <div class="spinner"></div>
       <p>Chargement du profil...</p>
     </div>
 
-    <!-- Profil introuvable -->
     <div v-else-if="!profile" class="error-state">
       <div class="error-icon">😕</div>
       <h2>Profil introuvable</h2>
@@ -25,9 +22,7 @@
       </router-link>
     </div>
 
-    <!-- Contenu du profil -->
     <div v-else class="profile-content">
-      <!-- En-tête du profil -->
       <div class="profile-header">
         <div class="profile-avatar-large">
           {{ getInitials(profile.display_name || profile.username) }}
@@ -38,7 +33,6 @@
 
         <p v-if="profile.bio" class="profile-bio">{{ profile.bio }}</p>
 
-        <!-- Stats -->
         <div class="profile-stats">
           <div class="stat-item">
             <strong>{{ publicReplies.length }}</strong>
@@ -50,13 +44,11 @@
           </div>
         </div>
 
-        <!-- Bouton envoyer un message -->
         <button @click="goToSendMessage" class="btn-send-message">
           💬 Envoyer un message anonyme
         </button>
       </div>
 
-      <!-- Réponses publiques -->
       <div class="replies-section">
         <h2 class="section-title">📝 Réponses publiques</h2>
 
@@ -71,12 +63,15 @@
             :key="reply.id"
             class="reply-card"
           >
+            <blockquote class="original-question-public">
+              <strong>Question :</strong> {{ reply.message?.content || 'Message original non trouvé' }}
+            </blockquote>
+
             <div class="reply-content">
               <p class="reply-text">{{ reply.content }}</p>
               <span class="reply-date">{{ formatDate(reply.created_at) }}</span>
             </div>
 
-            <!-- Réactions -->
             <div class="reply-actions">
               <button
                 @click="toggleReaction(reply.id, 'love')"
@@ -457,6 +452,33 @@ function goToSendMessage() {
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;
+}
+
+/* Fichier: PublicUserProfile.vue (dans la section <style scoped>) */
+
+/* Style pour la question anonyme associée dans la vue publique */
+.original-question-public {
+  /* Pour un look sobre et discret */
+  background: #1c2430;
+  border-left: 4px solid #8b949e; /* Ligne grise, couleur neutre */
+  padding: 12px 15px;
+  /* Utilisation de marges négatives pour que ce bloc s'étende visuellement */
+  margin: -20px -20px 15px -20px;
+  font-size: 14px;
+  color: #8b949e;
+  font-style: italic;
+  border-radius: 8px 8px 0 0; /* Coins arrondis en haut */
+  white-space: pre-wrap;
+}
+
+.original-question-public strong {
+  color: #e6edf3;
+  font-weight: 600;
+}
+
+/* Assurez-vous que la carte de réponse a un padding suffisant */
+.reply-card {
+    padding: 20px;
 }
 
 @keyframes spin {
