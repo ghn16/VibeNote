@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 const routes = [
-  // Routes publiques (IMPORTANT : mettre AVANT /:link)
+  // =====================================================
+  // ROUTES PUBLIQUES (AVANT TOUT)
+  // =====================================================
   {
     path: '/',
     name: 'Landing',
@@ -19,7 +21,9 @@ const routes = [
     component: () => import('@/pages/Signup.vue')
   },
 
-  // Routes authentifiées
+  // =====================================================
+  // ROUTES AUTHENTIFIÉES
+  // =====================================================
   {
     path: '/dashboard',
     name: 'Dashboard',
@@ -33,15 +37,15 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/analytics',
-    name: 'Analytics',
-    component: () => import('@/pages/Analytics.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
     path: '/my-link',
     name: 'MyLink',
     component: () => import('@/pages/MyLink.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/analytics',
+    name: 'Analytics',
+    component: () => import('@/pages/Analytics.vue'),
     meta: { requiresAuth: true }
   },
   {
@@ -56,30 +60,48 @@ const routes = [
     component: () => import('@/pages/Admin.vue'),
     meta: { requiresAuth: true, requiresAdmin: true }
   },
-  {
-  path: '/analytics',
-  name: 'Analytics',
-  component: () => import('@/pages/Analytics.vue'),
-  meta: { requiresAuth: true }
-},
-{
-  path: '/u/:username/replies',
-  name: 'PublicReplies',
-  component: () => import('@/pages/PublicReplies.vue')
-},
 
-  // Routes spéciales publiques
+  // =====================================================
+  // ROUTE PROFIL PUBLIC (Réponses publiques)
+  // =====================================================
   {
-    path: '/u/:username/replies',
+    path: '/public-replies',
     name: 'PublicReplies',
-    component: () => import('@/pages/PublicReplies.vue')
+    component: () => import('@/pages/PublicReplies.vue'),
+    meta: { requiresAuth: true }
   },
 
-  // Route catch-all pour les profils publics (DOIT être EN DERNIER)
+  // =====================================================
+  // ROUTE CATCH-ALL POUR PROFILS PUBLICS
+  // DOIT ÊTRE EN DERNIER !
+  // =====================================================
   {
     path: '/:link',
     name: 'PublicProfile',
-    component: () => import('@/pages/PublicProfile.vue')
+    component: () => import('@/pages/PublicProfile.vue'),
+    // Éviter de matcher les routes système
+    beforeEnter: (to, from, next) => {
+      const systemRoutes = [
+        'login', 'signup', 'dashboard', 'messages',
+        'my-link', 'analytics', 'settings', 'admin',
+        'public-replies'
+      ]
+
+      if (systemRoutes.includes(to.params.link)) {
+        next('/404')
+      } else {
+        next()
+      }
+    }
+  },
+
+  // =====================================================
+  // ROUTE 404 (Optionnelle)
+  // =====================================================
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: () => import('@/pages/Landing.vue') // ou créer une vraie page 404
   }
 ]
 
@@ -88,7 +110,9 @@ const router = createRouter({
   routes
 })
 
-// Protection des routes
+// =====================================================
+// PROTECTION DES ROUTES
+// =====================================================
 router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore()
 

@@ -63,22 +63,18 @@ const sending = ref(false)
 const error = ref('')
 const success = ref(false)
 
+// Récupérer le lien unique depuis l'URL
 const uniqueLink = route.params.link
 
 onMounted(async () => {
   await loadProfile()
-})
-onMounted(async () => {
-  await loadProfile()
-  await loadTemplates()
 
-  // Incrémenter les vues de profil
+  // Incrémenter les vues de profil si le profil existe
   if (profile.value) {
-    await supabase.rpc('increment_profile_view', {
-      profile_link: uniqueLink
-    })
+    await incrementProfileView()
   }
 })
+
 async function loadProfile() {
   try {
     const { data, error: err } = await supabase
@@ -91,8 +87,26 @@ async function loadProfile() {
     profile.value = data
   } catch (err) {
     console.error('Erreur chargement profil:', err)
+    profile.value = null
   } finally {
     loading.value = false
+  }
+}
+
+async function incrementProfileView() {
+  try {
+    // Vérifier si la fonction RPC existe
+    const { error } = await supabase.rpc('increment_profile_view', {
+      profile_link: uniqueLink
+    })
+
+    // Si la fonction n'existe pas, on l'ignore silencieusement
+    if (error && !error.message.includes('function')) {
+      console.warn('Erreur incrémentation vues:', error)
+    }
+  } catch (err) {
+    // Ignorer les erreurs de vues
+    console.warn('Fonction increment_profile_view non disponible')
   }
 }
 
@@ -103,27 +117,31 @@ async function sendMessage() {
   success.value = false
   sending.value = true
 
-  const result = await messagesStore.sendAnonymousMessage(
-    uniqueLink,
-    messageContent.value.trim()
-  )
+  try {
+    const result = await messagesStore.sendAnonymousMessage(
+      uniqueLink,
+      messageContent.value.trim()
+    )
 
-  if (result.success) {
-    success.value = true
-    messageContent.value = ''
-    setTimeout(() => {
-      success.value = false
-    }, 3000)
-  } else {
-    error.value = result.error
+    if (result.success) {
+      success.value = true
+      messageContent.value = ''
+      setTimeout(() => {
+        success.value = false
+      }, 3000)
+    } else {
+      error.value = result.error || 'Erreur lors de l\'envoi'
+    }
+  } catch (err) {
+    error.value = 'Erreur lors de l\'envoi du message'
+    console.error('Erreur sendMessage:', err)
+  } finally {
+    sending.value = false
   }
-
-  sending.value = false
 }
 </script>
 
 <style scoped>
-
 /* ===========================
    Public Profile - Dark Theme
 =========================== */
@@ -277,4 +295,18 @@ textarea:focus {
   to { transform: rotate(360deg); }
 }
 
+.error-card {
+  text-align: center;
+  padding: 60px 40px;
+}
+
+.error-card h2 {
+  color: #E6EDF3;
+  margin-bottom: 15px;
+}
+
+.error-card p {
+  color: #A0AEC0;
+  font-size: 16px;
+}
 </style>
