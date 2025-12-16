@@ -47,34 +47,43 @@ export const useMessagesStore = defineStore('messages', {
    // Fichier: messages.js
 
 // ... (code précédent) ...
+// =====================================================
+// CHARGER LES RÉPONSES PUBLIQUES
+// =====================================================
+async loadPublicReplies() {
+  try {
+    const { data: { user } } = await supabase.auth.getUser()
 
-    // =====================================================
-    // CHARGER LES RÉPONSES PUBLIQUES
-    // =====================================================
-    async loadPublicReplies() {
-      try {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (!user) return
+    if (!user) return
 
-        // MODIFICATION ICI :
-        // On sélectionne TOUS les champs de 'public_replies' ET le champ 'content' de la relation 'messages'
-        const { data, error } = await supabase
-          .from('replies')
-          .select('*, message:message_id(content)') // <- MODIFIÉ
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
+    // Récupérer les réponses publiques avec les messages originaux
+    const { data, error } = await supabase
+      .from('replies')
+      .select(`
+        *,
+        message:messages(content)
+      `)
+      .eq('user_id', user.id)
+      .eq('is_public', true)
+      .order('created_at', { ascending: false })
 
-        if (error) throw error
+    if (error) throw error
 
-        // Le résultat data ressemblera à :
-        // [{ id: 1, content: "Ma Réponse", message: { content: "La Question" }, ... }, ...]
+    // Formatter les données
+    this.publicReplies = (data || []).map(reply => ({
+      ...reply,
+      original_message: reply.message?.content || 'Message supprimé',
+      reactions: reply.reactions || { love: 0, like: 0, fire: 0 },
+      favorites_count: reply.favorites_count || 0
+    }))
 
-        this.publicReplies = data || []
-      } catch (error) {
-        console.error('Erreur chargement réponses publiques:', error)
-      }
-    },
+    // Charger les réactions de l'utilisateur actuel
+    await this.loadUserReactions(user.id)
 
+  } catch (error) {
+    console.error('Erreur chargement réponses publiques:', error)
+  }
+},
 // ... (code suivant) ...
     // =====================================================
     // CHARGER LES RÉACTIONS DE L'UTILISATEUR

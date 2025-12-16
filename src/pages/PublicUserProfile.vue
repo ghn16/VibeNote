@@ -62,10 +62,13 @@
             v-for="reply in publicReplies"
             :key="reply.id"
             class="reply-card"
-          >
-            <blockquote class="original-question-public">
-              <strong>Question :</strong> {{ reply.message?.content || 'Message original non trouvé' }}
-            </blockquote>
+            :id="`reply-${reply.id}`" >
+            <div class="original-message">
+              <p class="original-label">📩 Question anonyme :</p>
+              <p class="original-text">
+                "{{ reply.original_message_data?.content || 'Message supprimé' }}"
+              </p>
+            </div>
 
             <div class="reply-content">
               <p class="reply-text">{{ reply.content }}</p>
@@ -109,6 +112,22 @@
               >
                 {{ reply.is_favorited ? '⭐' : '☆' }}
               </button>
+
+              <button
+                @click="shareReply(reply.id)"
+                class="share-btn"
+                title="Partager cette réponse sur les réseaux (Texte)"
+              >
+                🔗 Partager
+              </button>
+
+              <button
+                @click="exportAsImage(reply.id)"
+                class="export-image-btn"
+                title="Exporter la réponse en image PNG"
+              >
+                🖼️ Exporter
+              </button>
             </div>
           </div>
         </div>
@@ -118,9 +137,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { supabase } from '@/services/supabase'
+import html2canvas from 'html2canvas' // ✅ Importation de html2canvas
 
 const route = useRoute()
 const router = useRouter()
@@ -130,8 +150,6 @@ const publicReplies = ref([])
 const loading = ref(true)
 const currentUser = ref(null)
 
-const username = route.params.username
-
 const totalReactions = computed(() => {
   return publicReplies.value.reduce((total, reply) => {
     return total + (reply.reactions?.love || 0) +
@@ -140,15 +158,224 @@ const totalReactions = computed(() => {
   }, 0)
 })
 
-onMounted(async () => {
-  await loadCurrentUser()
-  await loadProfile()
-  if (profile.value) {
-    await loadPublicReplies()
-    await loadUserReactions()
+// ------------------------------------------------------------------
+// LOGIQUE DE CHARGEMENT UNIFIÉE ET OPTIMISÉE
+// ------------------------------------------------------------------
+
+async function fetchUserProfileData(username) {
+    if (!username) return
+
+    loading.value = true
+    profile.value = null
+    publicReplies.value = []
+
+    try {
+        await loadCurrentUser()
+
+        const { data: profileData, error } = await supabase
+            .from('user_profiles')
+            .select('*, public_replies_raw:replies!user_id(id, content, created_at, is_public, original_message_data:message_id(content))')
+            .eq('username', username)
+            .single()
+
+        if (error || !profileData) {
+            if (error && error.code === 'PGRST116') {
+                profile.value = null;
+                return
+            }
+            throw error
+        }
+
+        profile.value = profileData
+
+        const publicOnlyReplies = profileData.public_replies_raw
+            .filter(r => r.is_public)
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+
+        if (publicOnlyReplies.length === 0) {
+            publicReplies.value = []
+            return
+        }
+
+        const replyIds = publicOnlyReplies.map(r => r.id)
+
+        const repliesWithStats = await fetchRepliesStats(publicOnlyReplies, replyIds)
+
+        if (currentUser.value) {
+            await applyUserReactionStatus(repliesWithStats, replyIds)
+        }
+
+        publicReplies.value = repliesWithStats
+
+    } catch (error) {
+        console.error('Erreur chargement profil public:', error)
+        profile.value = null
+    } finally {
+        loading.value = false
+    }
+}
+
+
+// ------------------------------------------------
+// WATCHER & OPTIMISATION (Inchangé)
+// ------------------------------------------------
+watch(
+    () => route.params.username,
+    (newUsername) => {
+        fetchUserProfileData(newUsername)
+    },
+    { immediate: true }
+)
+
+async function fetchRepliesStats(replies, replyIds) {
+    if (replyIds.length === 0) return replies
+
+    const [{ data: reactions }, { data: favorites }] = await Promise.all([
+        supabase
+            .from('reply_reactions')
+            .select('reply_id, reaction_type')
+            .in('reply_id', replyIds),
+        supabase
+            .from('reply_favorites')
+            .select('reply_id')
+            .in('reply_id', replyIds)
+    ])
+
+    const reactionCountsMap = {}
+    const favoriteCountsMap = {}
+
+    reactions?.forEach(r => {
+        reactionCountsMap[r.reply_id] = reactionCountsMap[r.reply_id] || { love: 0, like: 0, fire: 0 }
+        reactionCountsMap[r.reply_id][r.reaction_type]++
+    })
+
+    favorites?.forEach(f => {
+        favoriteCountsMap[f.reply_id] = (favoriteCountsMap[f.reply_id] || 0) + 1
+    })
+
+    return replies.map(reply => ({
+        ...reply,
+        reactions: reactionCountsMap[reply.id] || { love: 0, like: 0, fire: 0 },
+        favorites_count: favoriteCountsMap[reply.id] || 0,
+        user_reaction: null,
+        is_favorited: false,
+    }))
+}
+
+async function applyUserReactionStatus(replies, replyIds) {
+    if (!currentUser.value) return
+
+    const [{ data: userReactions }, { data: userFavorites }] = await Promise.all([
+        supabase
+            .from('reply_reactions')
+            .select('reply_id, reaction_type')
+            .eq('user_id', currentUser.value.id)
+            .in('reply_id', replyIds),
+        supabase
+            .from('reply_favorites')
+            .select('reply_id')
+            .eq('user_id', currentUser.value.id)
+            .in('reply_id', replyIds)
+    ])
+
+    const userReactionsMap = {}
+    userReactions?.forEach(r => {
+        userReactionsMap[r.reply_id] = r.reaction_type
+    })
+
+    const userFavoritesSet = new Set(userFavorites?.map(f => f.reply_id) || [])
+
+    replies.forEach(reply => {
+        reply.user_reaction = userReactionsMap[reply.id] || null
+        reply.is_favorited = userFavoritesSet.has(reply.id)
+    })
+}
+
+// ------------------------------------------------
+// ✅ FONCTIONNALITÉS DE PARTAGE (Texte & Image)
+// ------------------------------------------------
+
+// 🖼️ 1. Exportation en image (avec html2canvas)
+async function exportAsImage(replyId) {
+    const replyElement = document.getElementById(`reply-${replyId}`);
+
+    if (!replyElement) {
+      alert("Erreur: Élément de réponse non trouvé pour l'exportation.");
+      return;
+    }
+
+    try {
+      const canvas = await html2canvas(replyElement, {
+          backgroundColor: '#1A1A2E', // Couleur de fond par défaut du composant
+          scale: 2 // Améliore la qualité
+      });
+
+      const imageURL = canvas.toDataURL("image/png");
+
+      // Créer un lien temporaire pour forcer le téléchargement
+      const link = document.createElement('a');
+      link.download = `VibeNote_Reponse_${replyId}.png`;
+      link.href = imageURL;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      alert("Image de la réponse téléchargée !");
+
+    } catch (error) {
+      console.error('Erreur exportation image:', error);
+      alert("Échec de l'exportation en image. Assurez-vous que l'élément est visible.");
+    }
+}
+
+
+// 🔗 2. Partage de texte (avec fallback)
+async function shareReply(replyId) {
+  const reply = publicReplies.value.find(r => r.id === replyId);
+  if (!reply) return;
+
+  const questionContent = reply.original_message_data?.content || 'Question supprimée';
+  const replyContent = reply.content;
+  const profileUsername = profile.value.username;
+
+  const shareText = `
+    🔥 Réponse Publique de @${profileUsername} (VibeNote)
+    Q: ${questionContent}
+    R: ${replyContent}
+    Voir le profil et poser une question anonyme : ${window.location.origin}/${profileUsername}
+  `;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: `Réponse de ${profileUsername} sur VibeNote`,
+        text: shareText,
+        url: `${window.location.origin}/${profileUsername}`
+      });
+      console.log('Partage réussi');
+    } catch (error) {
+      fallbackShare(shareText);
+    }
+  } else {
+    fallbackShare(shareText);
   }
-  loading.value = false
-})
+}
+
+// Fonction de secours pour copier le texte
+function fallbackShare(text) {
+  const cleanText = text.trim().replace(/\n\s*\n/g, '\n\n');
+  navigator.clipboard.writeText(cleanText).then(() => {
+    alert("Texte copié dans le presse-papiers ! Collez-le sur votre réseau social.");
+  }).catch(err => {
+    console.error('Erreur de copie:', err);
+    alert("Impossible de copier. Veuillez copier manuellement:\n\n" + cleanText);
+  });
+}
+
+// ------------------------------------------------
+// FONCTIONS UTILITAIRES (Inchangées)
+// ------------------------------------------------
 
 async function loadCurrentUser() {
   try {
@@ -156,110 +383,6 @@ async function loadCurrentUser() {
     currentUser.value = user
   } catch (error) {
     console.error('Erreur chargement utilisateur:', error)
-  }
-}
-
-async function loadProfile() {
-  try {
-    const { data, error } = await supabase
-      .from('user_profiles')
-      .select('*')
-      .eq('username', username)
-      .single()
-
-    if (error) throw error
-    profile.value = data
-  } catch (error) {
-    console.error('Erreur chargement profil:', error)
-    profile.value = null
-  }
-}
-
-async function loadPublicReplies() {
-  try {
-    const { data, error } = await supabase
-      .from('replies')
-      .select(`
-        *,
-        message:messages(content)
-      `)
-      .eq('user_id', profile.value.id)
-      .eq('is_public', true)
-      .order('created_at', { ascending: false })
-
-    if (error) throw error
-
-    // Charger les compteurs de réactions
-    const repliesWithReactions = await Promise.all(
-      (data || []).map(async (reply) => {
-        // Compter les réactions
-        const { data: reactions } = await supabase
-          .from('reply_reactions')
-          .select('reaction_type')
-          .eq('reply_id', reply.id)
-
-        const reactionCounts = {
-          love: reactions?.filter(r => r.reaction_type === 'love').length || 0,
-          like: reactions?.filter(r => r.reaction_type === 'like').length || 0,
-          fire: reactions?.filter(r => r.reaction_type === 'fire').length || 0
-        }
-
-        // Compter les favoris
-        const { count: favCount } = await supabase
-          .from('reply_favorites')
-          .select('*', { count: 'exact', head: true })
-          .eq('reply_id', reply.id)
-
-        return {
-          ...reply,
-          reactions: reactionCounts,
-          favorites_count: favCount || 0,
-          user_reaction: null,
-          is_favorited: false
-        }
-      })
-    )
-
-    publicReplies.value = repliesWithReactions
-  } catch (error) {
-    console.error('Erreur chargement réponses:', error)
-  }
-}
-
-async function loadUserReactions() {
-  if (!currentUser.value) return
-
-  try {
-    const replyIds = publicReplies.value.map(r => r.id)
-
-    // Charger les réactions de l'utilisateur
-    const { data: reactions } = await supabase
-      .from('reply_reactions')
-      .select('reply_id, reaction_type')
-      .eq('user_id', currentUser.value.id)
-      .in('reply_id', replyIds)
-
-    // Charger les favoris
-    const { data: favorites } = await supabase
-      .from('reply_favorites')
-      .select('reply_id')
-      .eq('user_id', currentUser.value.id)
-      .in('reply_id', replyIds)
-
-    const reactionsMap = {}
-    reactions?.forEach(r => {
-      reactionsMap[r.reply_id] = r.reaction_type
-    })
-
-    const favoritesSet = new Set(favorites?.map(f => f.reply_id) || [])
-
-    publicReplies.value.forEach(reply => {
-      reply.user_reaction = reactionsMap[reply.id] || null
-      reply.is_favorited = favoritesSet.has(reply.id)
-    })
-
-  } catch (error) {
-    console.error('Erreur chargement réactions utilisateur:', error)
   }
 }
 
@@ -273,7 +396,6 @@ async function toggleReaction(replyId, reactionType) {
   if (!reply) return
 
   try {
-    // Vérifier si l'utilisateur a déjà une réaction
     const { data: existing } = await supabase
       .from('reply_reactions')
       .select('id, reaction_type')
@@ -283,35 +405,17 @@ async function toggleReaction(replyId, reactionType) {
 
     if (existing) {
       if (existing.reaction_type === reactionType) {
-        // Retirer la réaction
-        await supabase
-          .from('reply_reactions')
-          .delete()
-          .eq('id', existing.id)
-
+        await supabase.from('reply_reactions').delete().eq('id', existing.id)
         reply.reactions[reactionType]--
         reply.user_reaction = null
       } else {
-        // Changer la réaction
-        await supabase
-          .from('reply_reactions')
-          .update({ reaction_type: reactionType })
-          .eq('id', existing.id)
-
         reply.reactions[existing.reaction_type]--
         reply.reactions[reactionType]++
+        await supabase.from('reply_reactions').update({ reaction_type: reactionType }).eq('id', existing.id)
         reply.user_reaction = reactionType
       }
     } else {
-      // Ajouter la réaction
-      await supabase
-        .from('reply_reactions')
-        .insert({
-          reply_id: replyId,
-          user_id: currentUser.value.id,
-          reaction_type: reactionType
-        })
-
+      await supabase.from('reply_reactions').insert({ reply_id: replyId, user_id: currentUser.value.id, reaction_type: reactionType })
       reply.reactions[reactionType]++
       reply.user_reaction = reactionType
     }
@@ -338,21 +442,11 @@ async function toggleFavorite(replyId) {
       .maybeSingle()
 
     if (existing) {
-      await supabase
-        .from('reply_favorites')
-        .delete()
-        .eq('id', existing.id)
-
+      await supabase.from('reply_favorites').delete().eq('id', existing.id)
       reply.favorites_count--
       reply.is_favorited = false
     } else {
-      await supabase
-        .from('reply_favorites')
-        .insert({
-          reply_id: replyId,
-          user_id: currentUser.value.id
-        })
-
+      await supabase.from('reply_favorites').insert({ reply_id: replyId, user_id: currentUser.value.id })
       reply.favorites_count++
       reply.is_favorited = true
     }
@@ -393,10 +487,9 @@ function formatDate(timestamp) {
 }
 
 function goToSendMessage() {
-  router.push(`/${profile.value.unique_link}`)
+  router.push(`/${profile.value.username}`)
 }
 </script>
-
 <style scoped>
 .public-profile-container {
   min-height: 100vh;
@@ -452,33 +545,6 @@ function goToSendMessage() {
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;
-}
-
-/* Fichier: PublicUserProfile.vue (dans la section <style scoped>) */
-
-/* Style pour la question anonyme associée dans la vue publique */
-.original-question-public {
-  /* Pour un look sobre et discret */
-  background: #1c2430;
-  border-left: 4px solid #8b949e; /* Ligne grise, couleur neutre */
-  padding: 12px 15px;
-  /* Utilisation de marges négatives pour que ce bloc s'étende visuellement */
-  margin: -20px -20px 15px -20px;
-  font-size: 14px;
-  color: #8b949e;
-  font-style: italic;
-  border-radius: 8px 8px 0 0; /* Coins arrondis en haut */
-  white-space: pre-wrap;
-}
-
-.original-question-public strong {
-  color: #e6edf3;
-  font-weight: 600;
-}
-
-/* Assurez-vous que la carte de réponse a un padding suffisant */
-.reply-card {
-    padding: 20px;
 }
 
 @keyframes spin {
@@ -613,6 +679,10 @@ function goToSendMessage() {
   box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
 }
 
+/* =========================================
+   STYLES DES RÉPONSES ET ACTIONS
+   ========================================= */
+
 .replies-section {
   margin-top: 40px;
 }
@@ -660,6 +730,32 @@ function goToSendMessage() {
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
+/* Message original (Question) */
+.original-message {
+  background: rgba(102, 126, 234, 0.1);
+  border-left: 3px solid #667eea;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.original-label {
+  font-size: 12px;
+  color: #667eea;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.original-text {
+  font-size: 14px;
+  color: #A0AEC0;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 0;
+}
+
 .reply-content {
   margin-bottom: 20px;
 }
@@ -684,6 +780,7 @@ function goToSendMessage() {
   border-top: 1px solid #1E2230;
 }
 
+/* Boutons de réaction et favori */
 .reaction-btn,
 .favorite-btn {
   padding: 10px 18px;
@@ -698,6 +795,7 @@ function goToSendMessage() {
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
 }
 
 .reaction-btn:hover:not(:disabled),
@@ -736,6 +834,32 @@ function goToSendMessage() {
   color: #EAB308;
 }
 
+/* Boutons de Partage (Texte et Image) */
+.share-btn,
+.export-image-btn {
+    padding: 10px 18px;
+    background: transparent;
+    border: 1px solid #667eea;
+    border-radius: 20px;
+    color: #667eea;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.share-btn:hover,
+.export-image-btn:hover {
+    background: #667eea;
+    color: white;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px);
+}
+
 @media (max-width: 768px) {
   .profile-nav {
     padding: 15px 20px;
@@ -772,7 +896,9 @@ function goToSendMessage() {
   }
 
   .reaction-btn,
-  .favorite-btn {
+  .favorite-btn,
+  .share-btn,
+  .export-image-btn {
     padding: 8px 14px;
     font-size: 13px;
   }
